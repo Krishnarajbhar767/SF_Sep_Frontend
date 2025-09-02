@@ -42,6 +42,7 @@ function AdminUsers() {
         (async () => {
             try {
                 const data = await adminUserApis.getAllUsers();
+                console.log("Fetched users:", data);
                 setUsers(data);
             } catch (err) {
                 toast.error("Failed to load users");
@@ -53,17 +54,21 @@ function AdminUsers() {
 
     const onSubmit = handleSubmit(async (formData) => {
         const toastId = toast.loading("Please wait...");
+
         try {
             let updatedList;
             if (editUser) {
-                updatedList = await adminUserApis.update(
+                updatedList = await adminUserApis.updateUser(
                     editUser._id,
                     formData
                 );
             } else {
-                updatedList = await adminUserApis.create(formData);
+                updatedList = await adminUserApis.addUser(formData);
             }
             setUsers(updatedList);
+            
+            const freshList = await adminUserApis.getAllUsers();
+            setUsers(freshList);
             toast.success(editUser ? "User updated" : "User added");
             setIsModalOpen(false);
             setEditUser(null);
@@ -90,9 +95,10 @@ function AdminUsers() {
     };
 
     const confirmDelete = async (id) => {
-        const toastId = toast.loading("Deleting...");
+        console.log("Are you sure you want to delete this user?", id);
+        const toastId = toast.loading("Deleting...", id);
         try {
-            const updatedList = await adminUserApis.delete(id);
+            const updatedList = await adminUserApis.deleteUser(id);
             setUsers(updatedList);
             toast.success("User deleted");
             setDeleteUserId(null);
@@ -130,62 +136,72 @@ function AdminUsers() {
                         <UserSkeleton key={i} />
                     ))}
                 </div>
-            ) : users.length === 0 ? (
+            ) : users?.length === 0 ? (
                 <div className="text-center py-8">
                     <p className="text-gray-600 text-sm">No users available.</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {users.map((user) => (
-                        <motion.div
-                            key={user._id}
-                            whileHover={{ scale: 1.02 }}
-                            className="bg-white border border-gray-200 rounded-md shadow-sm p-4 flex flex-col gap-2"
-                        >
-                            <h3 className="text-base font-medium text-gray-800">
-                                {`${user.firstName} ${user.lastName}`}
-                            </h3>
-                            <p className="text-sm text-gray-600">
-                                Email: {user.email}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                                Phone: {user.phone}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                                Role: {user.role}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                                Joined:{" "}
-                                {
-                                    new Date(user.createdAt)
-                                        .toISOString()
-                                        .split("T")[0]
-                                }
-                            </p>
-                            <div className="flex justify-between mt-2">
-                                <button
-                                    onClick={() => onEditUser(user)}
-                                    className="flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm"
-                                >
-                                    <FiEdit size={14} /> Edit
-                                </button>
-                                <button
-                                    onClick={() => setDeleteUserId(user._id)}
-                                    className="flex items-center gap-1 text-red-600 hover:text-red-700 text-sm"
-                                >
-                                    <FiTrash size={14} /> Delete
-                                </button>
-                            </div>
-                        </motion.div>
-                    ))}
+
+                    {Array.isArray(users) && users.length > 0 ? (
+                        users.map((user) => (
+                            <motion.div
+                                key={user._id}
+                                whileHover={{ scale: 1.02 }}
+                                className="bg-white border border-gray-200 rounded-md shadow-sm p-4 flex flex-col gap-2"
+                            >
+                                <h3 className="text-base font-medium text-gray-800">
+                                    {`${user.firstName} ${user.lastName}`}
+                                </h3>
+                                <p className="text-sm text-gray-600">
+                                    Email: {user.email}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                    Phone: {user.phone}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                    DOB: {user.dob ? new Date(user.dob).toLocaleDateString() : "N/A"}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                    Role: {user.role}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                    Joined:{" "}
+                                    {
+                                        new Date(user.createdAt)
+                                            .toISOString()
+                                            .split("T")[0]
+                                    }
+                                </p>
+                                <div className="flex justify-between mt-2">
+                                    <button
+                                        onClick={() => onEditUser(user)}
+                                        className="flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm"
+                                    >
+                                        <FiEdit size={14} /> Edit
+                                    </button>
+                                    <button
+                                        onClick={() => setDeleteUserId(user._id)}
+                                        className="flex items-center gap-1 text-red-600 hover:text-red-700 text-sm"
+                                    >
+                                        <FiTrash size={14} /> Delete
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )
+                        )) : (
+                        <div className="col-span-3 text-center text-gray-600">
+                            No users found.
+                        </div>
+                    )
+                    }
                 </div>
             )}
 
             {/* Add/Edit Modal */}
             <div
-                className={`glass h-screen fixed inset-0 bg-opacity-30 flex items-center justify-center z-50 p-4 sm:p-6 overflow-y-hidden ${
-                    isModalOpen ? "" : "hidden"
-                }`}
+                className={`glass h-screen fixed inset-0 bg-opacity-30 flex items-center justify-center z-50 p-4 sm:p-6 overflow-y-hidden ${isModalOpen ? "" : "hidden"
+                    }`}
             >
                 <motion.div
                     initial={{ scale: 0.9, opacity: 0 }}
@@ -287,9 +303,8 @@ function AdminUsers() {
 
             {/* Delete Confirmation Modal */}
             <div
-                className={`glass fixed inset-0 bg-opacity-30 flex items-center justify-center z-50 p-4 ${
-                    deleteUserId ? "" : "hidden"
-                }`}
+                className={`glass fixed inset-0 bg-opacity-30 flex items-center justify-center z-50 p-4 ${deleteUserId ? "" : "hidden"
+                    }`}
             >
                 <motion.div
                     initial={{ scale: 0.9, opacity: 0 }}

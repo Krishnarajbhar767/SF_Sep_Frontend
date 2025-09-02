@@ -1,1 +1,0 @@
-import{j as e}from"./index-B8gvfyd-.js";function r({text:t}){return e.jsx("h2",{className:"text-center  tracking-tight text-sm font-normal md:text-lg capitalize leading-snug text-foreground",children:t})}export{r as S};

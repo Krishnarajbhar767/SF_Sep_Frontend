@@ -29,28 +29,6 @@ function App() {
     const hasFetchedUser = useRef(false);
 
 
-    
-    // don't allow to download images in anyone
-    // useEffect(() => {
-    //     const handleContextMenu = (e) => {
-    //         if (e.target.tagName === "IMG") {
-    //             e.preventDefault();
-    //         }
-
-    //         if (e.target.tagName === "VIDEO") {
-    //             e.preventDefault();
-    //         }
-    //     };
-
-    //     document.addEventListener("contextmenu", handleContextMenu);
-    //     return () => document.removeEventListener("contextmenu", handleContextMenu);
-    // }, []);
-
-
-
-
-
-
     // ========== CALLBACKS ==========
 
 

@@ -15,8 +15,10 @@ const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
     <BrowserRouter>
+    
         <ReduxProvider store={store}>
             <QueryClientProvider client={queryClient}>
+                
                 <App />
             </QueryClientProvider>
             <Toaster

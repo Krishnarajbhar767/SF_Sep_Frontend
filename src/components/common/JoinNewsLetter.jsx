@@ -82,7 +82,7 @@ export default function JoinNewsLetter() {
                         <div className="w-full md:w-1/2 hidden md:block">
 
                             <img
-                                src="https://srijanfabs.co.in/images/products/Dark-purple-pure-katan-silk-handwoven-banarasi-saree-1754119006221-310944539.jpg"
+                                src="https://res.cloudinary.com/ditulyswb/image/upload/v1755154815/SF_640x640_2_ofiz6u.jpg"
                                 alt="Join Newsletter"
                                 className="w-full h-full object-cover"
                             />

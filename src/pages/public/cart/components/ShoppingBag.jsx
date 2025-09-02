@@ -266,10 +266,13 @@ function EmptyCart() {
             </p>
 
             <button
-                onClick={() => navigate("Navigate Products Page")}
+                // onClick={() => navigate("/")}
                 className="bg-foreground text-white px-4 py-2 text-xs sm:text-sm uppercase"
             >
-                Continue Shopping
+                
+                <a href="/products/sarees/688b23dbdbf1510aada8c8fb" className="ml-2"
+                    >Continue Shopping</a>
+
             </button>
         </motion.div>
     );

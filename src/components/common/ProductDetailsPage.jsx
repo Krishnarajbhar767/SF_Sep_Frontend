@@ -138,6 +138,7 @@ function ProductDetailsPage() {
                             images={product.images}
                             productName={product.name}
                             stock={product.stock}
+                            product={product}
                         />
                         <ProductInfo
                             product={product}

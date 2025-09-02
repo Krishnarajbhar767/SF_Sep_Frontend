@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { Link, useParams , useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+
 import SidebarFilter from "../../../components/common/SidebarFilter";
 import { Star, Filter, Grid, List, ChevronDown } from "lucide-react";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import { Img } from 'react-image';
 
+import ProductCard from "./../../public/category/ProductCard.jsx";
+
 function CategoryPage() {
-    const { id, category, fabric } = useParams();
-    const displayCategory =
-        (category || fabric)?.replace(/-/g, " ") || "Category";
-    console.log(displayCategory);
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [categoryDetails, setCategoryDetails] = useState(null);
@@ -18,77 +19,135 @@ function CategoryPage() {
     const [sortOption, setSortOption] = useState("default");
     const [viewMode, setViewMode] = useState("grid");
 
+    const { id, category, fabric } = useParams();
+
+    const displayCategory = (category || fabric)?.replace(/-/g, " ") || "Category";
+
+
     const navigate = useNavigate();
 
-    const ProductSkeleton = useMemo(
-        () => () =>
-        (
-            <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm h-full flex flex-col">
-                <div className="relative h-64 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
-                <div className="p-4 space-y-3 flex-1 flex flex-col">
-                    <div className="h-5 bg-gray-200 rounded animate-pulse" />
-                    <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse" />
-                    <div className="flex justify-between items-center mt-auto">
-                        <div className="h-6 w-20 bg-gray-200 rounded animate-pulse" />
-                        <div className="h-4 w-16 bg-gray-200 rounded animate-pulse" />
-                    </div>
+    const ProductSkeleton = React.memo(() => (
+        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm h-full flex flex-col">
+            <div className="relative h-64 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
+            <div className="p-4 space-y-3 flex-1 flex flex-col">
+                <div className="h-5 bg-gray-200 rounded animate-pulse" />
+                <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse" />
+                <div className="flex justify-between items-center mt-auto">
+                    <div className="h-6 w-20 bg-gray-200 rounded animate-pulse" />
+                    <div className="h-4 w-16 bg-gray-200 rounded animate-pulse" />
                 </div>
             </div>
-        ),
-        []
-    );
+        </div>
+    ));
+
 
     useEffect(() => {
         const controller = new AbortController();
-        async function fetchData() {
+
+        const fetchData = async () => {
             setLoading(true);
             setError(null);
+
             try {
-                const url = fabric
-                    ? `${import.meta.env.VITE_BACKEND_URL
-                    }products/${fabric}/${id}`
-                    : `${import.meta.env.VITE_BACKEND_URL}categories/${id}`;
+                const baseUrl = import.meta.env.VITE_BACKEND_URL;
+                let url;
+
+                if (fabric) {
+                    url = `${baseUrl}products/${fabric}/${id}`;
+                } else if (id) {
+                    url = `${baseUrl}categories/${id}`;
+                } else {
+                    url = `${baseUrl}products`; // new case for all products
+                }
+
                 const res = await fetch(url, { signal: controller.signal });
                 if (!res.ok) throw new Error("Failed to fetch data");
-                const json = await res.json();
-                const list = fabric ? json.data : json.data.products;
+
+                const { data } = await res.json();
+                const list = fabric ? data : data.products;
+
                 setProducts(list);
                 setFilteredProducts(list);
+
                 setCategoryDetails({
-                    name: fabric || json.data.name || displayCategory,
-                    description:
-                        json.data.description ||
-                        "Explore our curated collection of premium products.",
+                    name: fabric || data.name || displayCategory,
+                    description: data.description || "Explore our curated collection of premium products.",
                 });
+
             } catch (err) {
-                if (err.name !== "AbortError") setError(err.message);
+                if (err.name !== "AbortError") {
+                    setError(err.message || "Something went wrong");
+                }
             } finally {
                 setLoading(false);
             }
-        }
+        };
 
         fetchData();
+
         return () => controller.abort();
     }, [id, fabric, displayCategory]);
 
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []); // runs once when component mounts
+
+
+    // const handleFilterChange = useCallback(
+    //     (filters) => {
+    //         const { priceRange, fabric, color, technique } = filters;
+    //         const filtered = products.filter((p) => {
+    //             return (
+    //                 p.price >= priceRange[0] &&
+    //                 p.price <= priceRange[1] &&
+    //                 (fabric
+    //                     ? p.fabric.title.toLowerCase() === fabric.toLowerCase()
+    //                     : true) &&
+    //                 (color ? p.color === color : true) &&
+    //                 (technique ? p.technique === technique : true)
+    //             );
+    //         });
+    //         setFilteredProducts(filtered);
+    //     },
+    //     [products]
+    // );
+
+
+    // multy 
     const handleFilterChange = useCallback(
         (filters) => {
             const { priceRange, fabric, color, technique } = filters;
+
             const filtered = products.filter((p) => {
                 return (
+                    // Price range filter
                     p.price >= priceRange[0] &&
                     p.price <= priceRange[1] &&
-                    (fabric
-                        ? p.fabric.title.toLowerCase() === fabric.toLowerCase()
+
+                    // Fabric multi-select filter
+                    (fabric.length > 0
+                        ? fabric.includes(p.fabric.title)
                         : true) &&
-                    (color ? p.color === color : true) &&
-                    (technique ? p.technique === technique : true)
+
+                    // Color multi-select filter
+                    (color.length > 0
+                        ? color.includes(p.color)
+                        : true) &&
+
+                    // Technique single select filter
+                    (technique
+                        ? p.technique === technique
+                        : true)
                 );
             });
+
             setFilteredProducts(filtered);
         },
         [products]
     );
+
+
 
     const sortProducts = useCallback((list, opt) => {
         const arr = [...list];
@@ -116,8 +175,8 @@ function CategoryPage() {
                 <Star
                     key={i}
                     className={`w-3 h-3 ${i < Math.floor(rating || 0)
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-gray-300"
+                        ? "fill-yellow-400 text-yellow-400"
+                        : "text-gray-300"
                         }`}
                 />
             )),
@@ -140,7 +199,7 @@ function CategoryPage() {
                             <div className="flex items-center justify-center gap-2 text-sm text-foreground">
                                 <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                                 <span>
-                                    {filteredProducts.length} Products Available
+                                    {filteredProducts?.length} Products Available
                                 </span>
                             </div>
                         </div>
@@ -159,8 +218,8 @@ function CategoryPage() {
                             <button
                                 onClick={() => setViewMode("grid")}
                                 className={`p-2 rounded-md transition-colors ${viewMode === "grid"
-                                        ? "bg-white shadow-sm text-foreground"
-                                        : "text-foreground hover:text-foreground"
+                                    ? "bg-white shadow-sm text-foreground"
+                                    : "text-foreground hover:text-foreground"
                                     }`}
                             >
                                 <Grid className="w-4 h-4" />
@@ -168,8 +227,8 @@ function CategoryPage() {
                             <button
                                 onClick={() => setViewMode("list")}
                                 className={`p-2 rounded-md transition-colors ${viewMode === "list"
-                                        ? "bg-white shadow-sm text-foreground"
-                                        : "text-foreground hover:text-foreground"
+                                    ? "bg-white shadow-sm text-foreground"
+                                    : "text-foreground hover:text-foreground"
                                     }`}
                             >
                                 <List className="w-4 h-4" />
@@ -206,15 +265,19 @@ function CategoryPage() {
                         onFilterChange={handleFilterChange}
                         isOpen={isSidebarOpen}
                         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+                        filteredProducts={filteredProducts}
                     />
+
+
+
 
 
                     <div className="flex-1">
                         {loading ? (
                             <div
                                 className={`grid gap-6 ${viewMode === "grid"
-                                        ? "grid-cols-1 sm:grid-cols-3 lg:grid-cols-3"
-                                        : "grid-cols-1"
+                                    ? "grid-cols-1 sm:grid-cols-3 lg:grid-cols-3"
+                                    : "grid-cols-1"
                                     }`}
                             >
                                 {Array.from({ length: 6 }).map((_, i) => (
@@ -233,7 +296,7 @@ function CategoryPage() {
                                 </h3>
                                 <p className="text-red-600">{error}</p>
                             </div>
-                        ) : filteredProducts.length === 0 ? (
+                        ) : filteredProducts?.length === 0 ? (
                             <div className="text-center py-12">
                                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <span className="text-foreground text-2xl">
@@ -249,117 +312,31 @@ function CategoryPage() {
                                 </p>
                             </div>
                         ) : (
-                            <div
-                                className={`grid gap-6 ${viewMode === "grid"
-                                        ? "grid-cols-1 sm:grid-cols-3 auto-rows-fr"
-                                        : "grid-cols-1"
-                                    }`}
-                            >
-                                {filteredProducts.map((product) => (
-                                    <div
-                                        key={product?._id}
-                                        className={`capitalize group cursor-pointer bg-white border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 rounded-lg overflow-hidden h-full ${viewMode === "list"
-                                                ? "flex"
-                                                : "flex flex-col"
-                                            }`}
-                                    >
-                                        <div
-                                            className={`relative overflow-hidden bg-gray-50 ${viewMode === "list"
-                                                    ? "w-48 flex-shrink-0"
-                                                    : "aspect-[4/5] h-96"
-                                                }`}
-                                        >
-                                            <ProductImage
-                                                src={product?.images?.[0]}
-                                                alt={product?.name}
-                                                _id={product?._id}
-                                            />
+                            // <div
+                            //     className={`grid gap-6 ${viewMode === "grid"
+                            //         ? "grid-cols-1 sm:grid-cols-3 auto-rows-fr"
+                            //         : "grid-cols-1"
+                            //         }`}
+                            // >
+                            //     {filteredProducts.map((product) => (
+                            //         <ProductCard
+                            //             key={product._id}
+                            //             product={product}   
+                            //             viewMode={viewMode}
+                            //             navigate={navigate}
+                            //         />  
 
-                                            {/* <img
-                                                loading="lazy"
-                                                src={
-                                                    product.images?.[0] ||
-                                                    "/Product_Placeholder.webp"
-                                                }
-                                                alt={product.name}
-                                                className="w-full h-full object-cover object-top group-hover:scale-102 transition-transform duration-300"
-                                            /> */}
-                                            {product.stock < 10 &&
-                                                product.stock > 0 && (
-                                                    <div className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-medium">
-                                                        Only {product.stock}{" "}
-                                                        left
-                                                    </div>
-                                                )}
-                                            {product.stock === 0 && (
-                                                // <div className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-medium">
-                                                //     Out Of Stock
-                                                // </div>
+                            //     ))}
+                            // </div>
 
-                                                <div className="absolute top-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-medium">
-                                                        Out Of stock
-                                                    </div>
-                                            )}
-                                        </div>
+                            <ProductGrid products={filteredProducts} viewMode={viewMode} navigate={navigate} />
 
-                                        <div className="p-4 flex flex-col flex-1 space-y-3">
-                                            <h3 onClick={()=> navigate(`/product/${product._id}`)} className="text-lg font-semibold text-foreground line-clamp-2 group-hover:text-foreground transition-colors cursor-pointer">
-                                                {product.name}
-                                            </h3>
-                                            <p className="text-sm text-foreground line-clamp-2 leading-relaxed">
-                                                {product.description ||
-                                                    "Premium quality product with excellent craftsmanship."}
-                                            </p>
-                                            <div className="flex justify-between items-center">
-                                                <div className="space-y-1">
-                                                    <p className="text-xl font-bold text-foreground">
-                                                        ₹
-                                                        {product.price?.toLocaleString() ||
-                                                            "N/A"}
-                                                    </p>
-                                                    {product.originalPrice &&
-                                                        product.originalPrice >
-                                                        product.price && (
-                                                            <p className="text-sm text-foreground line-through">
-                                                                ₹
-                                                                {product.originalPrice.toLocaleString()}
-                                                            </p>
-                                                        )}
-                                                </div>
-                                                <div className="text-right">
-                                                    <p className="text-sm text-foreground">
-                                                        Stock:{" "}
-                                                        {product.stock || "N/A"}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="grid grid-cols-3 gap-2 text-xs text-foreground bg-gray-50 p-3 rounded-lg">
-                                                <div>
-                                                    <span className="font-medium">
-                                                        Fabric:
-                                                    </span>{" "}
-                                                    {product.fabric?.title ||
-                                                        "N/A"}
-                                                </div>
-                                                <div>
-                                                    <span className="font-medium capitalize">
-                                                        Color:
-                                                    </span>{" "}
-                                                    {product.color || "N/A"}
-                                                </div>
-                                            </div>
-                                            <Link
-                                                to={`/product/${product._id}`}
-                                                className="mt-auto block w-full text-center bg-foreground text-white py-3 px-4 rounded-lg hover:bg-foreground/90 transition-colors duration-200 font-medium"
-                                            >
-                                                View Details
-                                            </Link>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
                         )}
+
+
+                        {/* <button>Load More 10 Product</button> */}
                     </div>
+
                 </div>
             </div>
         </main>
@@ -368,32 +345,76 @@ function CategoryPage() {
 
 export default CategoryPage;
 
-const ProductImage = React.memo(function ProductImage({ src, alt, _id }) {
-    const [loaded, setLoaded] = useState(false);
 
-    const navigate = useNavigate();
+// const ProductImage = React.memo(function ProductImage({ src, alt, _id }) {
+//     const [loaded, setLoaded] = useState(false);
+//     const navigate = useNavigate();
+
+
+
+//     //  Store image in localStorage for reuse
+//     useEffect(() => {
+//         const cachedImg = localStorage.getItem(`product-img-${_id}`);
+//         if (cachedImg) {
+//             setLoaded(true); // Image already cached
+//         } else {
+//             const img = new Image();
+//             img.src = src;
+//             img.onload = () => {
+//                 localStorage.setItem(`product-img-${_id}`, src);
+//                 setLoaded(true);
+//             };
+//         }
+//     }, [src, _id]);
+
+//     return (
+//         <div className="relative w-full h-full cursor-pointer">
+
+//             {!loaded && (
+//                 <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse z-10" />
+//             )}
+
+//             <img
+//                 loading="lazy"
+//                 src={src}
+//                 alt={alt}
+//                 onClick={() => navigate(`/product/${_id}`)}
+//                 className={`w-full h-full object-cover object-top transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"
+//                     }`}
+//             />
+
+//             <Img
+//                 src="https://example.com/image.jpg"
+//                 loader={<div>Loading...</div>}
+//                 unloader={<div>Image failed to load</div>}
+//             />
+//         </div>
+//     );
+// });
+
+const ProductGrid = React.memo(({ products, viewMode, navigate }) => {
+
+    // console.log("Rendering ProductGrid", products);
+
+    if (!products || products.length === 0) return null;
+
 
     return (
-        <div className="relative w-full h-full cursor-pointer">
-            {!loaded && (
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse z-10" />
-            )}
-            <img
-                loading="lazy"
-                src={src}
-                alt={alt}
-                onLoad={() => setLoaded(true)}
-                onClick={()=> navigate(`/product/${_id}`)}
-                className={`w-full h-full object-cover object-top transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"
-                    }`}
-            />
+        <div className={`grid gap-6 ${viewMode === "grid"
+            ? "grid-cols-1 sm:grid-cols-3 auto-rows-fr"
+            : "grid-cols-1"}`}>
 
-
-            <Img
-                src="https://example.com/image.jpg"
-                loader={<div>Loading...</div>}
-                unloader={<div>Image failed to load</div>}
-            />
+            {products.map((product) => (
+                <ProductCard
+                    key={product._id}
+                    product={product}
+                    viewMode={viewMode}
+                    navigate={navigate}
+                />
+            ))}
         </div>
     );
 });
+
+
+

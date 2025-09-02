@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 
 import UserLayout from "../layout/UserLayout";
 import Loader from "../components/common/Loader";
+import ScrollToTop from "../components/common/ScrollToTop";
 // Lazy load user pages
 const Dashboard = lazy(() => import("../pages/user/dashboard/Dashboard"));
 const Profile = lazy(() => import("../pages/user/profile/Profile"));

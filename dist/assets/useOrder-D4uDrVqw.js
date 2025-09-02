@@ -1,1 +1,0 @@
-import{e as d,d as o,r as c,l as n,af as i,ag as u}from"./index-B8gvfyd-.js";const h=s=>{const r=d(),a=o(e=>e.order.orders),t=o(e=>e.order.isLoaded);return c.useEffect(()=>{!s||t||n.get(`/user/orders/${s}`).then(e=>{r(i(e.data)),r(u(!0))}).catch(e=>console.error("Failed to fetch orders",e))},[s,t,r]),a};export{h as u};

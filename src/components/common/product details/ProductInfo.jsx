@@ -9,7 +9,7 @@ import {
     Shield,
     RotateCcw,
     ChevronDown,
-    Sparkles,
+    Sparkles, 
     ChevronUp,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,6 +47,8 @@ export default function ProductInfo({ product, onAddToCart, onShare }) {
         offer && isOfferAplied ? basePrice * (1 - offer / 100) : basePrice;
     const finalPrice = Math.round(discountedBase + addonPrice);
     const totalBefore = Math.round(basePrice + addonPrice);
+
+    console.log("Final Price:", finalPrice);
 
     useEffect(() => {
         setInCart(cartItems.some((i) => i._id === product?._id));
@@ -154,7 +156,7 @@ export default function ProductInfo({ product, onAddToCart, onShare }) {
 
             {/* Pricing */}
             <div className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-3">
-                ₹{Math.round(discountedBase)}
+                ₹{Math.round(discountedBase)} 
                 {offer && isOfferAplied && (
                     <span className="text-lg sm:text-xl text-green-600 font-medium">
                         <span className="line-through">₹{basePrice}</span> (

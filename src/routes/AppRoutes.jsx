@@ -1,10 +1,11 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import PublicRoutes from "./PublicRoutes";
 import UserRoutes from "./UserRoutes";
 import AdminRoutes from "./AdminRoutes";
 import { useSelector } from "react-redux";
 import Loader from "../components/common/Loader";
+import ScrollToTop from "../components/common/ScrollToTop";
 
 function AppRoutes() {
     const token = useSelector((s) => s.user?.token);
@@ -14,7 +15,7 @@ function AppRoutes() {
         return <Loader />;
     }
     return (
-        <Routes>
+         <Routes>
             {PublicRoutes}
 
             {/* User Routes */}
@@ -27,6 +28,7 @@ function AppRoutes() {
             <Route path="/unauthorized" element={<h1>🚫 Unauthorized</h1>} />
             <Route path="*" element={<h1>404 - Page Not Found</h1>} />
         </Routes>
+
     );
 }
 

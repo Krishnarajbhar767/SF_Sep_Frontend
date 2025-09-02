@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { Route } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
 import Loader from "../components/common/Loader";
+import ScrollToTop from "../components/common/ScrollToTop";
 // Lazy load public pages
 const Home = lazy(() => import("../pages/public/home/Home"));
 const SignUp = lazy(() => import("../pages/public/signup/SignUp"));
@@ -98,6 +99,16 @@ const PublicRoutes = (
                 </Suspense>
             }
         />
+
+         <Route
+            path="/products"
+            element={
+                <Suspense fallback={<Loader />}>
+                    <CategoryPage />
+                </Suspense>
+            }
+        />
+        
         <Route
             path="/products/:category/:id"
             element={

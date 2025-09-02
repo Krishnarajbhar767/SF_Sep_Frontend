@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 // Reusable FilterSection component for accordion-style sections
 const FilterSection = ({ title, isOpen, onToggle, children }) => (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
+    <div className="border border-gray-200 rounded-lg overflow-hidden ">
         <button
             className="w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
             onClick={onToggle}
@@ -29,8 +29,10 @@ const SidebarFilter = ({ onFilterChange, isOpen, toggleSidebar }) => {
     const [minInput, setMinInput] = useState("0");
     const [maxInput, setMaxInput] = useState("200000");
     const [priceRange, setPriceRange] = useState([0, 200000]);
-    const [fabric, setFabric] = useState("");
-    const [color, setColor] = useState("");
+
+    const [fabric, setFabric] = useState([]);
+    const [color, setColor] = useState([]);
+
     const [technique, setTechnique] = useState("");
     const [openSections, setOpenSections] = useState({
         price: true,
@@ -47,38 +49,96 @@ const SidebarFilter = ({ onFilterChange, isOpen, toggleSidebar }) => {
         technique !== "",
     ].filter(Boolean).length;
 
+
     // Toggle accordion section
     const toggleSection = (section) => {
         setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
     };
 
+
+    // Toggle selection in an array
+    const toggleSelection = (value, setState, state) => {
+        
+        if (state.includes(value)) {
+            setState(state.filter((v) => v !== value)); // remove
+        } else {
+            setState([...state, value]); // add
+        }
+    };
+
     // Handle applying filters with validation
+    // const handleApplyFilters = () => {
+    //     let min = Math.max(0, Number(minInput) || 0);
+    //     let max = Math.min(200000, Number(maxInput) || 200000);
+    //     if (min > max) [min, max] = [max, min]; // Swap if min > max
+    //     setPriceRange([min, max]);
+    //     setMinInput(min.toString());
+    //     setMaxInput(max.toString());
+    //     onFilterChange({ priceRange: [min, max], fabric, color, technique });
+    //     if (isOpen && toggleSidebar) toggleSidebar();
+    // };
+
+
+    // multy filter 
     const handleApplyFilters = () => {
         let min = Math.max(0, Number(minInput) || 0);
         let max = Math.min(200000, Number(maxInput) || 200000);
-        if (min > max) [min, max] = [max, min]; // Swap if min > max
+        if (min > max) [min, max] = [max, min];
+
         setPriceRange([min, max]);
         setMinInput(min.toString());
         setMaxInput(max.toString());
-        onFilterChange({ priceRange: [min, max], fabric, color, technique });
+
+        onFilterChange({
+            priceRange: [min, max],
+            fabric, // now an array
+            color,  // now an array
+            technique,
+        });
+
         if (isOpen && toggleSidebar) toggleSidebar();
     };
 
+
+
+
     // Handle clearing filters
+    // const handleClearFilters = () => {
+    //     setMinInput("0");
+    //     setMaxInput("200000");
+    //     setPriceRange([0, 200000]);
+    //     setFabric("");
+    //     setColor("");
+    //     setTechnique("");
+    //     onFilterChange({
+    //         priceRange: [0, 200000],
+    //         fabric: "",
+    //         color: "",
+    //         technique: "",
+    //     });
+    // };
+
+
+    // multy 
+
+
+
     const handleClearFilters = () => {
         setMinInput("0");
         setMaxInput("200000");
         setPriceRange([0, 200000]);
-        setFabric("");
-        setColor("");
+        setFabric([]);
+        setColor([]);
         setTechnique("");
         onFilterChange({
             priceRange: [0, 200000],
-            fabric: "",
-            color: "",
+            fabric: [],
+            color: [],
             technique: "",
         });
     };
+
+
 
     return (
         <>
@@ -92,9 +152,8 @@ const SidebarFilter = ({ onFilterChange, isOpen, toggleSidebar }) => {
 
             {/* Sidebar */}
             <div
-                className={`fixed inset-y-0 left-0 w-80 bg-white z-40 transform transition-transform duration-300 shadow-xl lg:relative lg:translate-x-0 lg:w-72 lg:shadow-none lg:border-r lg:border-gray-200 ${
-                    isOpen ? "translate-x-0" : "-translate-x-full"
-                }`}
+                className={`fixed inset-y-0 left-0 w-80 bg-white z-40 transform transition-transform duration-300 shadow-xl lg:relative lg:translate-x-0 lg:w-72 lg:shadow-none lg:border-r lg:border-gray-200 ${isOpen ? "translate-x-0" : "-translate-x-full"
+                    }`}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50">
@@ -118,7 +177,7 @@ const SidebarFilter = ({ onFilterChange, isOpen, toggleSidebar }) => {
                 </div>
 
                 {/* Filter Content */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                <div className="flex-1 overflow-y-scroll h-[550px] p-4 space-y-4">
                     {/* Price Range Filter */}
                     <FilterSection
                         title="Price Range"
@@ -182,7 +241,7 @@ const SidebarFilter = ({ onFilterChange, isOpen, toggleSidebar }) => {
                     </FilterSection>
 
                     {/* Fabric Filter */}
-                    <FilterSection
+                    {/* <FilterSection
                         title="Fabric"
                         isOpen={openSections.fabric}
                         onToggle={() => toggleSection("fabric")}
@@ -218,10 +277,50 @@ const SidebarFilter = ({ onFilterChange, isOpen, toggleSidebar }) => {
                                 </label>
                             ))}
                         </div>
+                    </FilterSection> */}
+
+                    <FilterSection
+                        title="Fabric"
+                        isOpen={openSections.fabric}
+                        onToggle={() => toggleSection("fabric")}
+                    >
+                        <div className="space-y-2">
+                            {fabricTitles.map((fabricOption) => {
+                                const val = fabricOption === "All Fabrics" ? "" : fabricOption;
+                                return (
+                                    <label
+                                        key={fabricOption}
+                                        className="flex items-center space-x-3 cursor-pointer capitalize"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            value={val}
+                                            checked={fabric.includes(val)}
+                                            onChange={() => {
+                                                if (fabricOption === "All Fabrics") {
+                                                    setFabric([]); // clear all if "All Fabrics"
+                                                } else {
+                                                    toggleSelection(val, setFabric, fabric);
+                                                }
+                                            }}
+                                            className="w-4 h-4 text-foreground border-gray-300 focus:ring-foreground"
+                                        />
+                                        <span className="text-sm text-foreground">
+                                            {fabricOption}
+                                        </span>
+                                    </label>
+                                );
+                            })}
+                        </div>
                     </FilterSection>
 
+
+
+
+
+
                     {/* Color Filter */}
-                    <FilterSection
+                    {/* <FilterSection
                         title="Color"
                         isOpen={openSections.color}
                         onToggle={() => toggleSection("color")}
@@ -277,7 +376,86 @@ const SidebarFilter = ({ onFilterChange, isOpen, toggleSidebar }) => {
                                 </label>
                             ))}
                         </div>
+                    </FilterSection> */}
+
+                    <FilterSection
+                        title="Color"
+                        isOpen={openSections.color}
+                        onToggle={() => toggleSection("color")}
+                    >
+                        <div className="space-y-2">
+                            {[
+                                "mehendi",
+                                "dark purple",
+                                "royal blue",
+                                "burnt maroon",
+                                "light peach",
+                                "ocean blue",
+                                "mustard yellow",
+                                "dark pink",
+                                "peach orange",
+                                "baby pink",
+                                "black",
+                                "dark green",
+                                "glossy red",
+                                "grey with drakgrey contast",
+                                "magenta with multicolours",
+                                "teal green",
+                                "sapphire blue",
+                                "mint green with brown contast",
+                                "red pink",
+                                "light copper with maroon contast",
+                                "glossy orange",
+                                "pink with peach",
+                                "glossy maroon",
+                                "white",
+                                "grey with mehendi",
+                                "gold with multicolour",
+                                "rani",
+                                "rani pink",
+                                "orange pink",
+                                "beach ocean blue",
+                                "peach with red contast",
+                                "steel ocean blue with yellow contast",
+                                "pink peach",
+                                "gold",
+                                "off white",
+                                "cream gold",
+                                "peachpink with light mehendi",
+                                "silver with yellow",
+                                "pastel purple",
+                                "royal blue with maroon contast",
+                                "peach pink"
+                            ].map((colorOption) => (
+                                    <label
+                                        key={colorOption}
+                                        className="flex items-center space-x-3 cursor-pointer"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            value={colorOption}
+                                            checked={color.includes(colorOption)}
+                                            onChange={() => toggleSelection(colorOption, setColor, color)}
+                                            className="w-4 h-4 text-foreground border-gray-300 focus:ring-foreground"
+                                        />
+                                        <div className="flex items-center gap-2">
+                                            {/* <div
+                                            className="w-4 h-4 rounded-full border border-gray-300"
+                                            style={{ backgroundColor: colorOption.toLowerCase() }}
+                                        /> */}
+                                            <span className="text-sm text-gray-700">
+                                                {colorOption
+                                                    .split(" ")
+                                                    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                                                    .join(" ")}
+
+                                            </span>
+                                        </div>
+                                    </label>
+                                ))}
+                        </div>
                     </FilterSection>
+
 
                     {/* Technique Filter */}
                     <FilterSection
@@ -309,7 +487,7 @@ const SidebarFilter = ({ onFilterChange, isOpen, toggleSidebar }) => {
                                         checked={
                                             technique ===
                                             (techniqueOption ===
-                                            "All Techniques"
+                                                "All Techniques"
                                                 ? ""
                                                 : techniqueOption)
                                         }

@@ -17,7 +17,7 @@ function HomeLetsExplore() {
             </div>
 
             {/* Background Image with CTA */}
-            <div className="relative h-[400px] md:h-[600px] py-4 bg-[url('./assets/images/Home/HomeLetsExplore/SF_1920x1080.jpg')] bg-fixed bg-center bg-cover bg-no-repeat text-white">
+            <div className="relative h-[400px] md:h-[600px] py-4 bg-[url('https://res.cloudinary.com/ditulyswb/image/upload/v1755154790/SF_1920x1080_bmvg3s.jpg')] bg-fixed bg-center bg-cover bg-no-repeat text-white">
                 <div className="flex items-center justify-center h-full">
                     <div className="text-center max-w-[90%] sm:max-w-[80%] md:max-w-[60%] lg:max-w-[50%] space-y-4">
                         <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight capitalize">

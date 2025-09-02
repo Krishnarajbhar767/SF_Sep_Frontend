@@ -33,16 +33,17 @@ function Home() {
         () => [
             {
                 // image: Banner1,
-                image:"https://srijanfabs.co.in/images/products/Dark-purple-pure-katan-silk-handwoven-banarasi-saree-1754117651469-227701216.jpg",
+                // image:"https://res.cloudinary.com/ditulyswb/image/upload/v1755154852/SF_BNNR_1920X1080.jpg_3_lz7qql.jpg",
+                image:"https://res.cloudinary.com/ditulyswb/image/upload/v1755497086/SF_BNNR_1920X1080.jpg_1_vsqeyt.jpg",
                 heading: "Bandhej Beauties",
                 subheading: "Handwoven Elegance",
-                slug:"/products/saree-silk-saree/687649168f700c1b0a46e479",
+                slug:"/products/sarees/688b23dbdbf1510aada8c8fb",
                 paragraph:
                     "Born from the hands of artisans, dyed with heritage, and draped in joy—discover Bandhej sarees that brighten every moment.",
             },
             {
                 // image: Banner2,
-                image:"https://srijanfabs.co.in/images/products/Dark-purple-pure-katan-silk-handwoven-banarasi-saree-1754117651470-558170356.jpg",
+                image:"https://res.cloudinary.com/ditulyswb/image/upload/v1755497749/2_bjllyv.webp",
                 heading: "Regal & Elegant",
                 subheading: "Modern Roots in Classic Weaves",
                 slug:"/collection/pure-katan-silk/687645658f700c1b0a46e381",
@@ -51,10 +52,10 @@ function Home() {
             },
             {
                 // image: Banner3,
-                image: "https://srijanfabs.co.in/images/products/Dark-purple-pure-katan-silk-handwoven-banarasi-saree-1754117651470-583994614.jpg",
+                image: "https://res.cloudinary.com/ditulyswb/image/upload/v1755498501/Banner3_cfxhw3.jpg",
                 heading: "Crafted with Heart",
                 subheading: "From Loom to Love",
-                slug:"/products/saree-silk-saree/687649168f700c1b0a46e479",
+                slug:"/products/sarees/688b23dbdbf1510aada8c8fb",
                 paragraph:
                     "Each piece is more than fabric — it’s an emotion. Woven by hands, worn with pride. Discover sarees that feel like home.",
             },
@@ -66,7 +67,7 @@ function Home() {
         () => [
             {
                 // image: Slide2Banner2,
-                image:"https://srijanfabs.co.in/images/products/Dark-purple-pure-katan-silk-handwoven-banarasi-saree-1754117651470-973276601.jpg",
+                image:"https://res.cloudinary.com/ditulyswb/image/upload/v1755498686/SF_BNNR_1920X1080_6_tkkrk1.jpg",
                 heading: "Silk That Dances in Duo",
                 subheading: "Modern Roots in Classic Weaves",
                 slug:"collection/pure-katan-silk/687645658f700c1b0a46e381",
@@ -75,10 +76,10 @@ function Home() {
             },
             {
                 // image: Slide2Banner1,
-                image:"https://srijanfabs.co.in/images/products/Dark-purple-pure-katan-silk-handwoven-banarasi-saree-1754117651470-673522574.jpg",
+                image:"https://res.cloudinary.com/ditulyswb/image/upload/v1755498766/SF_BNNR_1920X1080_5_oed9g3.jpg",
                 heading: "Tie me to my roots,Dye me in drama",
                 subheading: "Handwoven Elegance",
-                slug:"products/saree-silk-saree/687649168f700c1b0a46e479",
+                slug:"/products/sarees/688b23dbdbf1510aada8c8fb",
                 paragraph:
                     "A riot of color wrapped in centuries of tradition—Bandhej is your cultural comeback. Drape it, flaunt it, remix it—because heritage never goes out of style",
             },

@@ -42,7 +42,7 @@ function Header() {
         });
         // Generate category links
         const navLinks = sorted.map((item) => {
-            console.log("item", item);
+            // console.log("item", item);
             const slug = slugify(item?.name || "N/A", {
                 lower: true,
                 strict: true,
@@ -67,6 +67,7 @@ function Header() {
         });
         setOptimisedFabricsLinks(fabLinks);
         setOptimisedCategoriesList(navLinks);
+
     }, [categories, fabrics]);
 
     // Navigation links
@@ -74,7 +75,7 @@ function Header() {
         { title: "Home", path: "/" },
         {
             title: "Product",
-            path: "/product",
+            path: "/products",
             subLinks: optimisedCategoriesList,
         },
         {
@@ -94,6 +95,11 @@ function Header() {
     const [openSubmenu, setOpenSubmenu] = useState(null);
     const toggleSubmenu = (title) =>
         setOpenSubmenu(openSubmenu === title ? null : title);
+
+
+
+
+
 
     // Handlers
     const handleAccountClick = () => {
@@ -121,19 +127,19 @@ function Header() {
 
 
     // 30 july change this line
-   useEffect(() => {
-    const unsubscribe = scrollY.on("change", (currentY) => {
-        const diff = currentY - lastScrollY.current;
-        if (diff > 5 && currentY > HEADER_HEIGHT) {
-            setShowHeader(false);
-        } else if (diff < -5) {
-            setShowHeader(true);
-        }
-        lastScrollY.current = currentY;
-    });
+    useEffect(() => {
+        const unsubscribe = scrollY.on("change", (currentY) => {
+            const diff = currentY - lastScrollY.current;
+            if (diff > 5 && currentY > HEADER_HEIGHT) {
+                setShowHeader(false);
+            } else if (diff < -5) {
+                setShowHeader(true);
+            }
+            lastScrollY.current = currentY;
+        });
 
-    return () => unsubscribe(); // clean up on unmount
-}, [scrollY]);
+        return () => unsubscribe(); // clean up on unmount
+    }, [scrollY]);
 
 
     // Motion variants for header animation
@@ -165,7 +171,10 @@ function Header() {
                                     className="relative group"
                                 >
                                     {link.subLinks ? (
-                                        <div className="flex items-center gap-1 cursor-pointer text-nowrap">
+                                        <NavLink
+                                            to={link.path}
+                                            className="flex items-center gap-1 cursor-pointer text-nowrap group"
+                                        >
                                             <span className="hover:text-primary transition-colors">
                                                 {link.title}
                                             </span>
@@ -183,7 +192,7 @@ function Header() {
                                                     d="m19 9-7 7-7-7"
                                                 />
                                             </svg>
-                                        </div>
+                                        </NavLink>
                                     ) : (
                                         <NavLink
                                             to={link.path}
@@ -404,8 +413,8 @@ function Header() {
                                         >
                                             <svg
                                                 className={`w-4 h-4 transition-transform duration-300 ${openSubmenu === link.title
-                                                        ? "rotate-180"
-                                                        : ""
+                                                    ? "rotate-180"
+                                                    : ""
                                                     }`}
                                                 fill="none"
                                                 stroke="currentColor"

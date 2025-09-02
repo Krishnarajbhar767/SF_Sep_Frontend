@@ -11,13 +11,13 @@ function Home3Grid() {
 
     const navigate = useNavigate();
     const data = [
-        { image: "https://srijanfabs.co.in/images/products/Royal-blue-pure-khaddi-georgette-handbrush-handwoven-banarasi-saree-1754118507457-44017225.jpg", link: "#", title: "Pure khaddi georgette", slug:"collection/pure-khaddi-georgette/6876457b8f700c1b0a46e38b"},
-        { image: "https://srijanfabs.co.in/images/products/Royal-blue-pure-khaddi-georgette-handbrush-handwoven-banarasi-saree-1754118507463-364833347.jpg", link: "#", title: "pure katan silk" , slug:"collection/pure-katan-silk/687645658f700c1b0a46e381"},
-        { image: "https://srijanfabs.co.in/images/products/Royal-blue-pure-khaddi-georgette-handbrush-handwoven-banarasi-saree-1754118507463-718765608.jpg", link: "#", title: "pure tissue silk", slug:"collection/pure-tissue-silk/687645948f700c1b0a46e3a3" },
+        { image: "https://res.cloudinary.com/ditulyswb/image/upload/v1755154637/SF_1080x1350_1_s5nxo0.jpg", link: "#", title: "Pure khaddi georgette", slug:"collection/pure-khaddi-georgette/6876457b8f700c1b0a46e38b"},
+        { image:"https://res.cloudinary.com/ditulyswb/image/upload/v1755499207/SF_1080x1350_2_deejwu.jpg" , link: "#", title: "pure katan silk" , slug:"collection/pure-katan-silk/687645658f700c1b0a46e381"},
+        { image: "https://res.cloudinary.com/ditulyswb/image/upload/v1755499208/SF_1080x1350_3_kxzam2.jpg", link: "#", title: "pure tissue silk", slug:"collection/pure-tissue-silk/687645948f700c1b0a46e3a3" },
     ];
 
     return (
-        <div className="boxedContainer lg:px-15 px-5 w-full py-4  h-auto  overflow-x-hidden  ">
+        <div className="boxedContainer lg:px-15 px-5 w-full py-4  h-auto  overflow-x-hidden ">
             <div className="md:mb-14 mb-10 mt-4">
                 <div>
                     <Heading

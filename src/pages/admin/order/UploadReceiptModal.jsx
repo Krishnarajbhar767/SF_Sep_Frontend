@@ -235,17 +235,50 @@ const UploadReceiptModal = ({ isOpen, onClose, orderId }) => {
     const handleUpload = async (formData) => {
         if (!selectedFile) return;
         setUploading(true);
-        console.log("Receipt Form Data", formData);
+        // console.log("Receipt Form Data", formData);
         try {
             const res = await uploadMedia([selectedFile], {
                 name: "order_reciept",
             });
-            const imageUrl = res;
+
+            console.log("Receipt Image URL", res);
+            console.log("Receipt Form Data........", formData);
+
+            //             Receipt Form Data........ 
+
+            // {trackingId: '12345', parcelWeight: '200gm', deliveryPartner: 'Blue Dart'}
+            // deliveryPartner
+            // : 
+            // "Blue Dart"
+            // parcelWeight
+            // : 
+            // "200gm"
+            // trackingId
+            // : 
+            // "12345"
+
+
+            // If single upload
+            const imageUrl = res.secure_url || res[0];
+
             // Now Call Upload Receipt APi
+            // const apiRes = await axiosInstance.post(
+            //     "/admin/orders/updateDelhiveryReceipt",
+            //     {
+            //         delhiveryReceipt: imageUrl,
+            //         orderId,
+            //         trackingId: formData?.trackingId,
+            //         parcelWeight: formData?.parcelWeight,
+            //         deliveryPartner: formData?.deliveryPartner,
+            //     }
+            // );
+
             const apiRes = await axiosInstance.post(
                 "/admin/orders/updateDelhiveryReceipt",
                 { delhiveryReceipt: imageUrl, orderId, ...formData }
             );
+
+            console.log("Receipt Upload Response", apiRes);
             if (apiRes) {
                 setSelectedFile(null);
                 setPreviewUrl(null);
@@ -296,7 +329,11 @@ const UploadReceiptModal = ({ isOpen, onClose, orderId }) => {
                         <span className="text-blue-600 underline">
                             click to browse
                         </span>
+
                     </p>
+                    <p>MAX 10MB</p>
+
+
 
                     {/* Preview */}
                     {selectedFile && previewUrl && (
@@ -373,11 +410,10 @@ const UploadReceiptModal = ({ isOpen, onClose, orderId }) => {
                         type="submit"
                         onClick={handleSubmit(handleUpload)}
                         disabled={!selectedFile || uploading}
-                        className={`px-4 py-2 text-sm text-white rounded ${
-                            selectedFile && !uploading
-                                ? "bg-gray-900 hover:bg-blue-700"
-                                : "bg-gray-400 cursor-not-allowed"
-                        }`}
+                        className={`px-4 py-2 text-sm text-white rounded ${selectedFile && !uploading
+                            ? "bg-gray-900 hover:bg-blue-700"
+                            : "bg-gray-400 cursor-not-allowed"
+                            }`}
                     >
                         {uploading ? "Uploading..." : "Upload"}
                     </button>

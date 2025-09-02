@@ -1,5 +1,13 @@
+
+
+
+
+
+// 18 Aug 
+
+
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiUser, FiEdit, FiSave, FiLock } from "react-icons/fi";
 import InputField from "../../../components/common/InputField";
@@ -8,18 +16,23 @@ import authApis from "../../../services/api/auth/auth.apis";
 import toast from "react-hot-toast";
 import { handleAxiosError } from "../../../utils/handleAxiosError";
 import Button from "../../../components/common/Button";
+import { setUser } from "../../../redux/slices/userSlice";
+import axiosInstance from "../../../utils/apiConnector";
 
 function Profile() {
     const user = useSelector((state) => state?.user?.user);
+    const dispatch = useDispatch();
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [isChangingPassword, setIsChangingPassword] = useState(false);
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false); // New state for loading
 
     // Profile form setup
     const {
         register: registerProfile,
         handleSubmit: handleSubmitProfile,
         formState: { errors: profileErrors },
+        reset: resetProfile,
     } = useForm({
         defaultValues: {
             firstName: user?.firstName,
@@ -61,9 +74,25 @@ function Profile() {
         }
     }
 
-    const onSubmitProfile = (data) => {
-        console.log("Profile updated:", data);
-        setIsEditingProfile(false);
+    const onSubmitProfile = async (data) => {
+        const toastId = toast.loading("Updating profile...");
+        setIsSubmitting(true);
+
+        try {
+            const res = await axiosInstance.put('/user/update-profile', data);
+
+            if (res.data.success) {
+                // Update the user state in Redux with the new data from the API
+                dispatch(setUser(res.data.user));
+                toast.success("Profile updated successfully!");
+                setIsEditingProfile(false); // Exit editing mode on success
+            }
+        } catch (error) {
+            handleAxiosError(error);
+        } finally {
+            toast.dismiss(toastId);
+            setIsSubmitting(false);
+        }
     };
 
     const onSubmitPasswordChange = async (data) => {
@@ -130,9 +159,7 @@ function Profile() {
                             <FiUser size={20} /> Update Profile
                         </h3>
                         <button
-                            onClick={() =>
-                                setIsEditingProfile(!isEditingProfile)
-                            }
+                            onClick={() => setIsEditingProfile(!isEditingProfile)}
                             className="flex items-center gap-2 bg-foreground text-white px-4 py-2 text-sm uppercase hover:bg-foreground/90 transition-colors duration-200 shadow-md"
                         >
                             {isEditingProfile ? (
@@ -162,7 +189,7 @@ function Profile() {
                             />
                             <InputField
                                 label="Last Name"
-                                name="lastName..."
+                                name="lastName"
                                 register={registerProfile}
                                 errors={profileErrors}
                                 rules={{ required: "Last name is required" }}
@@ -181,7 +208,7 @@ function Profile() {
                                         message: "Invalid email address",
                                     },
                                 }}
-                                readOnly={!isEditingProfile}
+                                readOnly={true} // Email should likely not be editable
                             />
                             <InputField
                                 label="Phone"
@@ -213,12 +240,13 @@ function Profile() {
                         </div>
 
                         {isEditingProfile && (
-                            <button
+                            <Button
                                 type="submit"
                                 className="bg-foreground text-white px-6 py-2 text-sm uppercase hover:bg-foreground/90 transition-colors duration-200 shadow-md"
+                                loading={isSubmitting} // Use the new state to show a loading spinner
                             >
                                 Update Profile
-                            </button>
+                            </Button>
                         )}
                     </form>
                 </div>
@@ -262,8 +290,7 @@ function Profile() {
                                     register={registerPassword}
                                     errors={passwordErrors}
                                     rules={{
-                                        required:
-                                            "Current password is required",
+                                        required: "Current password is required",
                                         minLength: {
                                             value: 6,
                                             message:
@@ -286,7 +313,7 @@ function Profile() {
                                         },
                                         validate: (value) =>
                                             value !==
-                                                watchPassword("oldPassword") ||
+                                            watchPassword("oldPassword") ||
                                             "New password cannot be the same as the old password",
                                     }}
                                 />
@@ -297,11 +324,10 @@ function Profile() {
                                     register={registerPassword}
                                     errors={passwordErrors}
                                     rules={{
-                                        required:
-                                            "Confirm password is required",
+                                        required: "Confirm password is required",
                                         validate: (value) =>
                                             value ===
-                                                watchPassword("password") ||
+                                            watchPassword("password") ||
                                             "Passwords do not match",
                                     }}
                                 />

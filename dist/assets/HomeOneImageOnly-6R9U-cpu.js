@@ -1,0 +1,1 @@
+import{j as e}from"./index-Bn0qEctH.js";function l(){return e.jsx("div",{className:"h-[300px] md:h-[550px] w-full boxedContainer py-4 sm:px-8 overflow-hidden",children:e.jsx("img",{src:"https://res.cloudinary.com/ditulyswb/image/upload/v1755155453/SF_1920x800_koql8b.jpg",className:"object-cover h-full w-full cursor-pointer sm:px-8",alt:"background"})})}export{l as default};
