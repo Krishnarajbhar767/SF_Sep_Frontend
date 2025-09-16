@@ -4,6 +4,7 @@
     --color-primary: #f17f21;
     --color-foreground: rgb(83, 62, 45);
 }
+
 /* INput Style Start */
 .input-wrapper {
     position: relative;
@@ -36,9 +37,9 @@
     transition: all 0.2s ease;
 }
 
-.input-field:focus + .input-label,
-.input-field:not(:placeholder-shown) + .input-label,
-.input-field:-webkit-autofill + .input-label {
+.input-field:focus+.input-label,
+.input-field:not(:placeholder-shown)+.input-label,
+.input-field:-webkit-autofill+.input-label {
     top: 0;
     font-size: 0.75rem;
     color: #000;
@@ -62,6 +63,7 @@ body {
 button {
     cursor: pointer;
 }
+
 input:-webkit-autofill,
 select:-webkit-autofill {
     background-color: white !important;
@@ -76,9 +78,11 @@ select:-webkit-autofill {
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
+
 .headerLinks {
     position: relative;
 }
+
 .headerLinks::after {
     content: "";
     position: absolute;
@@ -120,20 +124,27 @@ select:-webkit-autofill {
 }
 
 #ShopByCategorySlider {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 #ShopByCategorySlider::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, and newer Edge */
+    display: none;
+    /* Chrome, Safari, and newer Edge */
 }
+
 #searchItemsContainer {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 #searchItemsContainer::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, and newer Edge */
+    display: none;
+    /* Chrome, Safari, and newer Edge */
 }
 
 /* Search Container */
@@ -160,6 +171,7 @@ select:-webkit-autofill {
     from {
         transform: translateY(-100%);
     }
+
     to {
         transform: translateY(0);
     }
@@ -182,6 +194,7 @@ select:-webkit-autofill {
     0% {
         transform: translateX(-100%);
     }
+
     100% {
         transform: translateX(100%);
     }
@@ -210,3 +223,75 @@ select:-webkit-autofill {
 }
 
 /* Category Page SideFilter And Product Details Addon CSS ENd  */
+
+
+/* Blogs Details  Custom CSS */
+.blog-content {
+    font-size: 1.125rem;
+    /* ~18px for slightly larger text */
+    line-height: 1.9;
+    color: var(--foreground, #1f2937);
+}
+
+/* Paragraph spacing */
+.blog-content p {
+    margin-bottom: 1.25rem;
+}
+
+/* Lists */
+.blog-content ol,
+.blog-content ul {
+    margin-left: 1.75rem;
+    padding-left: 1.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.blog-content ol {
+    list-style-type: decimal;
+}
+
+.blog-content ul {
+    list-style-type: disc;
+}
+
+.blog-content li {
+    margin-bottom: 0.75rem;
+}
+
+/* Headings */
+.blog-content h1,
+.blog-content h2,
+.blog-content h3 {
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.blog-content h1 {
+    font-size: 2rem;
+}
+
+.blog-content h2 {
+    font-size: 1.75rem;
+}
+
+.blog-content h3 {
+    font-size: 1.5rem;
+}
+
+/* Links */
+.blog-content a {
+    color: var(--foreground, #2563eb);
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+/* Images inside content */
+.blog-content img {
+    max-width: 100%;
+    border-radius: 0.75rem;
+    margin: 1.5rem 0;
+    display: block;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

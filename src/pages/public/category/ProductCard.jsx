@@ -96,15 +96,7 @@ const ProductCard = React.memo(({ product, viewMode, navigate }) => {
                         </p>
                     </div>
 
-                    {/* <div className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-3">
-                        ₹{Math.round(discountedBase)}
-                        {offer && isOfferAplied && (
-                            <span className="text-lg sm:text-xl text-green-600 font-medium">
-                                <span className="line-through">₹{basePrice}</span> (
-                                {offer}% OFF)
-                            </span>
-                        )}
-                    </div> */}
+
 
                     <p className="text-sm text-foreground">Stock: {product.stock || "N/A"}</p>
                 </div>
@@ -131,7 +123,7 @@ const ProductCard = React.memo(({ product, viewMode, navigate }) => {
 export default ProductCard;
 
 
-// const ProductImageLazy = React.memo(function ProductImageLazy({ src, alt, _id }) {
+
 //     const [loaded, setLoaded] = useState(false);
 //     const navigate = useNavigate();
 

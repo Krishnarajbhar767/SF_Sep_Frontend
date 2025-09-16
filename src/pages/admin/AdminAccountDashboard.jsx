@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiHome, FiBox, FiGrid, FiUsers, FiShoppingCart } from "react-icons/fi";
 import { GiClothes } from "react-icons/gi";
 import { BiSolidOffer, BiSolidCoupon } from "react-icons/bi";
+import { FaBloggerB } from "react-icons/fa";
+import { FaComments } from "react-icons/fa6";
 
 import { useMemo } from "react";
 
@@ -46,6 +48,8 @@ function AdminAccountDashboard() {
                 icon: <FiGrid size={20} />,
             },
             { path: "users", label: "Users", icon: <FiUsers size={20} /> },
+            { path: "blogs", label: "Blogs", icon: < FaBloggerB size={20} /> },
+            { path: "comments", label: "Comments", icon: < FaComments size={20} /> },
             {
                 path: "orders",
                 label: "Orders",
@@ -93,11 +97,10 @@ function AdminAccountDashboard() {
                     >
                         <Link
                             to={`/admin/${item.path}`}
-                            className={`relative flex items-center gap-2 px-4 py-3 text-sm font-medium uppercase transition-colors duration-300 whitespace-nowrap ${
-                                location.pathname === `/admin/${item.path}`
-                                    ? "text-gray-800"
-                                    : "text-gray-600 hover:text-gray-800"
-                            }`}
+                            className={`relative flex items-center gap-2 px-4 py-3 text-sm font-medium uppercase transition-colors duration-300 whitespace-nowrap ${location.pathname === `/admin/${item.path}`
+                                ? "text-gray-800"
+                                : "text-gray-600 hover:text-gray-800"
+                                }`}
                         >
                             {item.icon}
                             {item.label}
@@ -131,12 +134,11 @@ function AdminAccountDashboard() {
                             >
                                 <Link
                                     to={`/admin/${item.path}`}
-                                    className={`flex items-center gap-3 px-4 py-3 text-base font-medium uppercase rounded-md transition-all duration-300 ${
-                                        location.pathname ===
+                                    className={`flex items-center gap-3 px-4 py-3 text-base font-medium uppercase rounded-md transition-all duration-300 ${location.pathname ===
                                         `/admin/${item.path}`
-                                            ? "bg-gray-800 text-white shadow-sm"
-                                            : "text-gray-600 hover:bg-gray-100 hover:text-gray-800"
-                                    }`}
+                                        ? "bg-gray-800 text-white shadow-sm"
+                                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-800"
+                                        }`}
                                 >
                                     {item.icon}
                                     {item.label}

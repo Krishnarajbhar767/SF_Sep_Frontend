@@ -3,6 +3,17 @@ import { Route } from "react-router-dom";
 import AdminLayout from "../layout/AdminLayout";
 import Loader from "../components/common/Loader";
 
+
+
+
+const AdminCommentsDashboard = lazy(() =>
+    import("../pages/admin/comment/AdminCommentsDashboard")
+);
+const BlogDashboard = lazy(() =>
+    import("../pages/admin/blog/BlogDashboard")
+);
+
+
 // Lazy load heavy components
 const AdminOverview = lazy(() =>
     import("../pages/admin/overview/AdminOverview")
@@ -26,7 +37,7 @@ const AdminHomeManagement = lazy(() =>
 const AdminFabrics = lazy(() => import("../pages/admin/fabrics/AdminFabrics"));
 const AdminOffers = lazy(() => import("../pages/admin/offer/AdminOffers"));
 const AdminCoupons = lazy(() => import("../pages/admin/coupon/AdminCoupons"));
- const  AdminNewsletterEmails = lazy(()=>import("../pages/admin/newsletter/AdminNewsletterEmails"));
+const AdminNewsletterEmails = lazy(() => import("../pages/admin/newsletter/AdminNewsletterEmails"));
 // Fallback UI while components load
 
 const AdminRoutes = (
@@ -112,6 +123,22 @@ const AdminRoutes = (
             }
         />
         <Route
+            path="blogs"
+            element={
+                <Suspense fallback={<Loader />}>
+                    <BlogDashboard />
+                </Suspense>
+            }
+        />
+        <Route
+            path="comments"
+            element={
+                <Suspense fallback={<Loader />}>
+                    <AdminCommentsDashboard />
+                </Suspense>
+            }
+        />
+        <Route
             path="orders"
             element={
                 <Suspense fallback={<Loader />}>
@@ -159,7 +186,7 @@ const AdminRoutes = (
                 </Suspense>
             }
         />
-        
+
     </Route>
 );
 

@@ -94,27 +94,9 @@ function CategoryPage() {
     }, []); // runs once when component mounts
 
 
-    // const handleFilterChange = useCallback(
-    //     (filters) => {
-    //         const { priceRange, fabric, color, technique } = filters;
-    //         const filtered = products.filter((p) => {
-    //             return (
-    //                 p.price >= priceRange[0] &&
-    //                 p.price <= priceRange[1] &&
-    //                 (fabric
-    //                     ? p.fabric.title.toLowerCase() === fabric.toLowerCase()
-    //                     : true) &&
-    //                 (color ? p.color === color : true) &&
-    //                 (technique ? p.technique === technique : true)
-    //             );
-    //         });
-    //         setFilteredProducts(filtered);
-    //     },
-    //     [products]
-    // );
 
 
-    // multy 
+
     const handleFilterChange = useCallback(
         (filters) => {
             const { priceRange, fabric, color, technique } = filters;
@@ -329,7 +311,10 @@ function CategoryPage() {
                             //     ))}
                             // </div>
 
-                            <ProductGrid products={filteredProducts} viewMode={viewMode} navigate={navigate} />
+                            <ProductGrid
+                                products={filteredProducts}
+                                viewMode={viewMode}
+                                navigate={navigate} />
 
                         )}
 
@@ -346,51 +331,6 @@ function CategoryPage() {
 export default CategoryPage;
 
 
-// const ProductImage = React.memo(function ProductImage({ src, alt, _id }) {
-//     const [loaded, setLoaded] = useState(false);
-//     const navigate = useNavigate();
-
-
-
-//     //  Store image in localStorage for reuse
-//     useEffect(() => {
-//         const cachedImg = localStorage.getItem(`product-img-${_id}`);
-//         if (cachedImg) {
-//             setLoaded(true); // Image already cached
-//         } else {
-//             const img = new Image();
-//             img.src = src;
-//             img.onload = () => {
-//                 localStorage.setItem(`product-img-${_id}`, src);
-//                 setLoaded(true);
-//             };
-//         }
-//     }, [src, _id]);
-
-//     return (
-//         <div className="relative w-full h-full cursor-pointer">
-
-//             {!loaded && (
-//                 <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse z-10" />
-//             )}
-
-//             <img
-//                 loading="lazy"
-//                 src={src}
-//                 alt={alt}
-//                 onClick={() => navigate(`/product/${_id}`)}
-//                 className={`w-full h-full object-cover object-top transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"
-//                     }`}
-//             />
-
-//             <Img
-//                 src="https://example.com/image.jpg"
-//                 loader={<div>Loading...</div>}
-//                 unloader={<div>Image failed to load</div>}
-//             />
-//         </div>
-//     );
-// });
 
 const ProductGrid = React.memo(({ products, viewMode, navigate }) => {
 

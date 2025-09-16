@@ -1,1 +1,0 @@
-import{l as t,h as s}from"./index-Bn0qEctH.js";const c=async(e,n)=>{var r;const o=new FormData;e.forEach(a=>{o.append("files",a)}),o.append("name",n.name);try{return console.log("formData ------------- ",o),(r=(await t.post("/upload",o)).data)==null?void 0:r.data}catch(a){return console.error("Upload failed:",a),s(a),null}};export{c as u};

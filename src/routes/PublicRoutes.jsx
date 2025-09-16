@@ -3,7 +3,10 @@ import { Route } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
 import Loader from "../components/common/Loader";
 import ScrollToTop from "../components/common/ScrollToTop";
+
 // Lazy load public pages
+const BlogDetailsPage = lazy(() => import("../pages/public/blog/BlogDetailsPage"));
+const BlogsPage = lazy(() => import("../pages/public/blog/BlogsPage"));
 const Home = lazy(() => import("../pages/public/home/Home"));
 const SignUp = lazy(() => import("../pages/public/signup/SignUp"));
 const Login = lazy(() => import("../pages/public/login/Login"));
@@ -57,7 +60,7 @@ const PublicRoutes = (
                 </Suspense>
             }
         />
-        
+
         <Route
             path="/sign-up"
             element={
@@ -100,7 +103,7 @@ const PublicRoutes = (
             }
         />
 
-         <Route
+        <Route
             path="/products"
             element={
                 <Suspense fallback={<Loader />}>
@@ -108,7 +111,7 @@ const PublicRoutes = (
                 </Suspense>
             }
         />
-        
+
         <Route
             path="/products/:category/:id"
             element={
@@ -208,6 +211,23 @@ const PublicRoutes = (
             element={
                 <Suspense fallback={<Loader />}>
                     <PaymentFailed />
+                </Suspense>
+            }
+        />
+        {/* Blogs  Route */}
+        <Route
+            path="/blogs"
+            element={
+                <Suspense fallback={<Loader />}>
+                    <BlogsPage />
+                </Suspense>
+            }
+        />
+        <Route
+            path="/blogs/:id"
+            element={
+                <Suspense fallback={<Loader />}>
+                    <BlogDetailsPage />
                 </Suspense>
             }
         />
