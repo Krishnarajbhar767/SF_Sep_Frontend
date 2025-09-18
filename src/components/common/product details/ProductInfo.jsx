@@ -9,7 +9,7 @@ import {
     Shield,
     RotateCcw,
     ChevronDown,
-    Sparkles, 
+    Sparkles,
     ChevronUp,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,11 +62,10 @@ export default function ProductInfo({ product, onAddToCart, onShare }) {
         Array.from({ length: 5 }).map((_, i) => (
             <Star
                 key={i}
-                className={`w-5 h-5 ${
-                    i < Math.floor(rating)
-                        ? "fill-yellow-400 text-yellow-400"
-                        : "text-gray-300"
-                }`}
+                className={`w-5 h-5 ${i < Math.floor(rating)
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-gray-300"
+                    }`}
             />
         ));
 
@@ -87,6 +86,7 @@ export default function ProductInfo({ product, onAddToCart, onShare }) {
             state: {
                 buyNowItem: {
                     ...product,
+                    id: product?._id,
                     quantity: qty,
                     addons: { withFallPico, withTassels },
                     finalPrice,
@@ -121,11 +121,10 @@ export default function ProductInfo({ product, onAddToCart, onShare }) {
                     <div className="flex gap-2">
                         <button
                             onClick={toggleWishlist}
-                            className={`p-2 rounded-full ${
-                                wishlisted
-                                    ? "bg-red-100 text-red-600"
-                                    : "bg-gray-100 text-foreground hover:text-red-600"
-                            }`}
+                            className={`p-2 rounded-full ${wishlisted
+                                ? "bg-red-100 text-red-600"
+                                : "bg-gray-100 text-foreground hover:text-red-600"
+                                }`}
                         >
                             <Heart
                                 className={wishlisted ? "fill-current" : ""}
@@ -156,7 +155,7 @@ export default function ProductInfo({ product, onAddToCart, onShare }) {
 
             {/* Pricing */}
             <div className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-3">
-                ₹{Math.round(discountedBase)} 
+                ₹{Math.round(discountedBase)}
                 {offer && isOfferAplied && (
                     <span className="text-lg sm:text-xl text-green-600 font-medium">
                         <span className="line-through">₹{basePrice}</span> (

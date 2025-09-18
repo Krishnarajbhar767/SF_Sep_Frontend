@@ -224,7 +224,7 @@ const PublicRoutes = (
             }
         />
         <Route
-            path="/blogs/:id"
+            path="/blogs/:slug"
             element={
                 <Suspense fallback={<Loader />}>
                     <BlogDetailsPage />

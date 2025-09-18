@@ -1,8 +1,4 @@
 
-
-// 6 Aug Code
-
-// AdminOrderDetails.jsx
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -395,8 +391,41 @@ const AdminOrderDetails = () => {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const printRef = useRef();
+    console.log('Order Details ->', order)
     const navigate = useNavigate();
+    const receiptOption = {
+        id: order?.razorpay_order_id || "",
+        date: order?.createdAt || "",
+        customerName: `${order?.user?.firstName || ""} ${order?.user?.lastName || ""
+            }`,
+        email: order?.user?.email || "",
+        phone: order?.shippingAddressSnapshot?.phone || "",
 
+        shippingAddress: {
+            street: order?.shippingAddressSnapshot?.street || "",
+            city: order?.shippingAddressSnapshot?.city || "",
+            state: order?.shippingAddressSnapshot?.state || "",
+            country: order?.shippingAddressSnapshot?.country || "",
+            postalCode: order?.shippingAddressSnapshot?.postalCode || "",
+        },
+
+        items: (order?.items || []).map((item) => {
+            console.log('Item  consoling  I Am --->', item.offer)
+            console.log('Item  consoling  I Am --->', item.product.price)
+
+            return {
+                name: item?.product?.name || "Product",
+                quantity: item?.quantity || 0,
+                price: item.product.price * (1 - item.offer / 100),
+                withFallPico: item?.withFallPico || false,
+                withTassels: item?.withTassels || false,
+            }
+        }),
+
+        subtotal: order?.totalAmount || 0, // already includes GST
+        shipping: "Free",
+        paymentMethod: order?.paymentMethod || "N/A",
+    };
     useEffect(() => {
         setLoading(true);
         axiosInstance
@@ -473,9 +502,7 @@ const AdminOrderDetails = () => {
 
                     <PrintableComponent
                         receipt={
-                            {
-                                /* as before */
-                            }
+                            receiptOption
                         }
                         printRef={printRef}
                     />

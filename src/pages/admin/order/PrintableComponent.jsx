@@ -81,7 +81,7 @@ const PrintableComponent = ({ receipt, printRef }) => {
                                 return (
                                     <tr key={index} className="text-center">
                                         <td className="border p-2 text-left">
-                                            {item?.product?.name || "Product"}
+                                            {item?.name || "Product"}
                                         </td>
                                         <td className="border p-2">
                                             {item?.quantity}

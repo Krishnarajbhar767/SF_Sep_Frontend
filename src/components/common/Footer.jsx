@@ -14,8 +14,10 @@ import {
     FaLinkedin,
     FaPinterest,
     FaChevronUp,
-    
+
 } from "react-icons/fa";
+import { queryClient } from "../../QueryClient";
+import localforage from "localforage";
 
 const primaryColor = "rgb(83, 62, 45)";
 
@@ -46,13 +48,13 @@ const Footer = () => {
             icon: FaLinkedin,
             link: "https://www.linkedin.com/company/srijan-fabs/",
         },
-        { 
+        {
             icon: FaPinterest,
-            link: "https://pin.it/4Y8ChoBph" 
+            link: "https://pin.it/4Y8ChoBph"
         },
         {
-           icon: BsInstagram,
-           link: "https://www.instagram.com/srijanfabs/"
+            icon: BsInstagram,
+            link: "https://www.instagram.com/srijanfabs/"
         }
     ];
 
@@ -137,7 +139,7 @@ const Footer = () => {
                     {/* Our Products - Dynamic */}
                     <div>
                         <h3 className="font-bold text-lg mb-4">Our Products</h3>
-                        
+
                         <ul className="space-y-2 text-sm">
                             {Array.isArray(categories) && categories.map((cat) => {
                                 const slug = slugify(cat.name, { lower: true });
@@ -197,13 +199,14 @@ const Footer = () => {
 
                     {/* <p href="https://mediafleetblue.com/">Made with ❤️ by Media Fleetblue.</p> */}
 
-                    <a href="https://mediafleetblue.com/" target="_block">
-                        Made with ❤️ by Media Fleetblue.
-                    </a>
+                    <p>Copyright &copy; 2025 Srijan Fabs. All rights reserved.</p>
+
 
                     <a
+
+
                         href="#top"
-                        className="mt-4 sm:mt-0 flex items-center gap-1 hover:underline"
+                        className="mt-4 sm:mt-0 flex items-center gap-1 hover:underline cursor-pointer"
                     >
                         Back to Top <FaChevronUp />
                     </a>

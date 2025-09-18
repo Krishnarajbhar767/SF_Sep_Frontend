@@ -1,40 +1,62 @@
-import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../../../utils/apiConnector";
 import CommentList from "./CommentList";
 import CommentForm from "./CommentForm";
-import { useSelector } from "react-redux";
+
+const fetchBlog = async (id) => {
+    const { data } = await axiosInstance.get(`/blogs/${id}`);
+    return data.data;
+};
+
+const fetchComments = async (id) => {
+    const { data } = await axiosInstance.get(`/comments/blog/${id}`);
+    return data.data;
+};
 
 export default function BlogDetails() {
     const user = useSelector((state) => state.user.user);
-    const { id } = useParams();
-    const [blog, setBlog] = useState(null);
-    const [comments, setComments] = useState([]);
+    const { slug } = useParams();
+    const { id } = useLocation()?.state;
 
-    const fetchBlog = async () => {
-        try {
-            const { data } = await axiosInstance.get(`/blogs/${id}`);
-            setBlog(data.data);
-        } catch (err) {
-            console.error(err);
-        }
-    };
+    //  Blog details query
+    const {
+        data: blog,
+        isLoading: blogLoading,
+        isError: blogError,
+        error: blogErr,
+    } = useQuery({
+        queryKey: ["blog", id],
+        queryFn: () => fetchBlog(id),
+        staleTime: 1000 * 60 * 10,
+        cacheTime: 1000 * 60 * 30,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+    });
 
-    const fetchComments = async () => {
-        try {
-            const { data } = await axiosInstance.get(`/comments/blog/${id}`);
-            setComments(data.data);
-        } catch (err) {
-            console.error(err);
-        }
-    };
+    // Comments query
+    const {
+        data: comments = [],
+        isLoading: commentsLoading,
+        refetch: refetchComments,
+    } = useQuery({
+        queryKey: ["comments", id],
+        queryFn: () => fetchComments(id),
+        staleTime: 1000 * 60 * 10,
+        cacheTime: 1000 * 60 * 30,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+    });
 
-    useEffect(() => {
-        fetchBlog();
-        fetchComments();
-    }, [id]);
-
-    if (!blog) return <p className="text-foreground text-center mt-10">Loading...</p>;
+    if (blogLoading || commentsLoading)
+        return <p className="text-foreground text-center mt-10">Loading...</p>;
+    if (blogError)
+        return (
+            <p className="text-center text-red-500 mt-10">
+                Failed to load blog: {blogErr.message}
+            </p>
+        );
 
     return (
         <div className="max-w-4xl mx-auto px-4 py-10">
@@ -63,23 +85,27 @@ export default function BlogDetails() {
                 dangerouslySetInnerHTML={{ __html: blog.content }}
             ></div>
 
+            {/* Comments Section */}
             <div className="border-t pt-8">
                 <h2 className="text-2xl font-bold mb-6 text-foreground">Comments</h2>
 
                 <CommentList
                     comments={comments}
-                    fetchComments={fetchComments}
+                    fetchComments={refetchComments}
                     user={user}
                     blogId={id}
                 />
 
                 {user && !user.isAdmin && (
-                    <CommentForm blogId={id} fetchComments={fetchComments} user={user} />
+                    <CommentForm blogId={id} fetchComments={refetchComments} user={user} />
                 )}
-                {console.log('USer Alert', user)}
                 {!user && (
                     <p className="text-foreground/70 mt-4">
-                        Please <Link to="/login" className="text-foreground underline">login</Link> to post a comment.
+                        Please{" "}
+                        <Link to="/login" className="text-foreground underline">
+                            login
+                        </Link>{" "}
+                        to post a comment.
                     </p>
                 )}
             </div>

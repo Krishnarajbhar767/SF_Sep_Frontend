@@ -241,7 +241,7 @@ const UploadReceiptModal = ({ isOpen, onClose, orderId }) => {
                 name: "order_reciept",
             });
 
-            console.log("Receipt Image URL", res);
+            console.log("Receipt Image URL", res[0]);
             console.log("Receipt Form Data........", formData);
 
             //             Receipt Form Data........ 
@@ -259,7 +259,7 @@ const UploadReceiptModal = ({ isOpen, onClose, orderId }) => {
 
 
             // If single upload
-            const imageUrl = res.secure_url || res[0];
+            const imageUrl = res[0] || res.secure_url || "";
 
             // Now Call Upload Receipt APi
             // const apiRes = await axiosInstance.post(

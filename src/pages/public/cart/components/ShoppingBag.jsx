@@ -85,7 +85,7 @@ function CartItemRow({ item, idx, onIncrement, onDecrement, onRemove }) {
                     className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-cover object-top"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.2 }}
-                    // onClick={() => navigate(`product/${item._id}`)}
+                // onClick={() => navigate(`product/${item._id}`)}
                 />
                 <div className="flex-1">
                     <h2 className="text-xs sm:text-sm md:text-base font-medium text-foreground capitalize line-clamp-1">
@@ -269,9 +269,9 @@ function EmptyCart() {
                 // onClick={() => navigate("/")}
                 className="bg-foreground text-white px-4 py-2 text-xs sm:text-sm uppercase"
             >
-                
+
                 <a href="/products/sarees/688b23dbdbf1510aada8c8fb" className="ml-2"
-                    >Continue Shopping</a>
+                >Continue Shopping</a>
 
             </button>
         </motion.div>
@@ -426,11 +426,10 @@ function OrderSummary({
                 whileTap={{ scale: 0.98 }}
                 onClick={handleCheckout}
                 disabled={cartEmpty || isCheckingOut}
-                className={`hidden lg:flex group relative h-9 sm:h-10 md:h-12 items-center justify-center overflow-hidden px-3 sm:px-4 md:px-6 font-light text-neutral-200 text-xs sm:text-sm md:text-base tracking-wide w-full mt-2 sm:mt-4 uppercase ${
-                    cartEmpty
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-foreground"
-                }`}
+                className={`hidden lg:flex group relative h-9 sm:h-10 md:h-12 items-center justify-center overflow-hidden px-3 sm:px-4 md:px-6 font-light text-neutral-200 text-xs sm:text-sm md:text-base tracking-wide w-full mt-2 sm:mt-4 uppercase ${cartEmpty
+                    ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                    : "bg-foreground"
+                    }`}
             >
                 {isCheckingOut ? (
                     <motion.div
@@ -542,13 +541,17 @@ function ShoppingBag({
 
     // Quantity update
     const updateQuantityHandler = async (id, change, idx) => {
-        console.log(id);
         const item = cartItems[idx];
+        console.log('Stock', item.stock, change)
         if (!item || item._id !== id) return;
         if (isBuyNow) {
-            setLocalQty((prev) =>
-                Math.max(1, change > 0 ? prev + 1 : prev - 1)
-            );
+            setLocalQty((prev) => {
+                if (change > 0) {
+                    return Math.min(item.stock, prev + 1);
+                } else {
+                    return Math.max(1, prev - 1);
+                }
+            });
             return;
         }
         if (user) {
@@ -659,11 +662,10 @@ function ShoppingBag({
                     whileTap={{ scale: 0.98 }}
                     onClick={handleCheckout}
                     disabled={cartEmpty || isCheckingOut}
-                    className={`group relative flex h-12 items-center justify-center overflow-hidden font-light text-neutral-200 text-sm tracking-wide w-full uppercase ${
-                        cartEmpty
-                            ? "bg-gray-200 text-gray-500"
-                            : "bg-foreground"
-                    }`}
+                    className={`group relative flex h-12 items-center justify-center overflow-hidden font-light text-neutral-200 text-sm tracking-wide w-full uppercase ${cartEmpty
+                        ? "bg-gray-200 text-gray-500"
+                        : "bg-foreground"
+                        }`}
                 >
                     {isCheckingOut ? (
                         <motion.div
