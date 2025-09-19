@@ -31,12 +31,18 @@ function Home() {
     return (
         <div className="w-full h-full ">
             {/* Hero Slider */}
+            {/* Section 1 */}
             <HomeHeroSlider sliderData={sliderData1} />
 
             {/* Sections */}
             <Suspense fallback={<Loader />} >
+                {/* Section 2 */}
+                {/* Home 3 Grid */}
                 <Home3Grid />
+                {/* Section 3 */}
+                {/* Home Video */}
                 <HomeVideo />
+                {/* Section 4 */}
                 <Home2BigGrid />
             </Suspense>
 

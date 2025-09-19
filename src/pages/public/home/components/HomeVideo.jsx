@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "motion/react";
+
 import Heading from "./Heading";
 import SubHeading from "./SubHeading";
-import VIDEO from "../../../../assets/SB_1920x854_vdo.mp4";
+
 import POSTER from "../../../../assets/POSTER.png"; // optional, if you have a poster
+import { useHomeVideo } from "../../../../hooks/useHomeVideo";
 
 function HomeVideo() {
+    const data = useHomeVideo()
     const [showVideo, setShowVideo] = useState(false);
 
     useEffect(() => {
@@ -20,13 +22,13 @@ function HomeVideo() {
         <div className=" w-full py-4 h-auto  overflow-x-hidden">
             <div className="md:mb-14 mb-10 mt-4">
                 <div>
-                    <Heading text="Timeless charm in every  fold" />
+                    <Heading text={data.heading} />
                 </div>
                 <div className="mt-2">
                     <SubHeading
-                        text="Where six yards tell a timeless tale,
-                            and every weave whispers elegance .From classic looms to graceful drapes,
-                            we bring you heritage reimagined"
+                        text={data.subHeading
+
+                        }
                     />
                 </div>
             </div>
@@ -42,7 +44,7 @@ function HomeVideo() {
                         preload="none"
                         poster={POSTER}
                     >
-                        <source src={VIDEO} type="video/mp4" />
+                        <source src={data.video} type="video/mp4" />
                         Your browser does not support HTML5 video.
                     </video>
                 ) : (

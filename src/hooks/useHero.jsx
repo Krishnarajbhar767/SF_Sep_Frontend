@@ -23,7 +23,8 @@ export const useHeroSlides = () => {
         queryKey: ['hero-slides'],
         queryFn: fetchSlides,
         staleTime: 1000 * 60 * 10, // 10 min cache
-        cacheTime: 1000 * 60 * 30, // 1 hour in memory
+        cacheTime: 1000 * 60 * 30, // 30 hour in memory
+        retry: 5,
     });
 
     // Separate slides into top and non-top
