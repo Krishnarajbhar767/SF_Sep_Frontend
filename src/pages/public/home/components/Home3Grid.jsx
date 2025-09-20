@@ -10,7 +10,7 @@ import SubHeading from "./SubHeading";
 import { useHome3grid } from "../../../../hooks/useHome3Grid";
 function Home3Grid() {
     const data = useHome3grid()
-    console.log('Returning Data =>', data)
+
     const navigate = useNavigate();
 
 

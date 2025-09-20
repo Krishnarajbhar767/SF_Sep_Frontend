@@ -9,7 +9,7 @@ import { queryClient } from "../../../QueryClient";
 import { useHeroSlides } from "../../../hooks/useHero";
 
 // Lazy-load heavy sections
-const HomeSection4 = React.lazy(() =>
+const HomeOnlyTwoSlideGrid = React.lazy(() =>
     import("./components/HomeOnlyTwoSlideGrid")
 );
 const WhyChooseUs = React.lazy(() => import("./components/WhyChooseUs"));
@@ -47,15 +47,20 @@ function Home() {
             </Suspense>
 
             <div className="py-4">
+                {/* Section 5 */}
                 <Second_Slider textPosition={true} sliderData={sliderData2} />
             </div>
 
 
 
             <Suspense fallback={<Loader />}>
+                {/* Section 6 */}
                 <HomeOneImageOnly />
-                <HomeSection4 />
+                {/* Section 7 */}
+                <HomeOnlyTwoSlideGrid />
+                {/* Section 8 */}
                 <HomeLetsExplore />
+                {/* Section 9 */}
                 <WhyChooseUs />
             </Suspense>
         </div>

@@ -4,27 +4,11 @@ import SubHeading from "./SubHeading";
 import { motion, AnimatePresence } from "framer-motion";
 import Banner1 from "../../../../assets/images/Home/HomeOnlyTwoSlideGrid/SF_640x640_1.jpg";
 import Banner2 from "../../../../assets/images/Home/HomeOnlyTwoSlideGrid/SF_640x640_2.jpg";
+import { useHomeTwoSlidGrid } from "../../../../hooks/useHomeTwoSlidGrid";
 
 function HomeOnlyTwoSlideGrid() {
     const [slideIndex, setSlideIndex] = useState(0);
-
-    const slideData = [
-        {
-            heading: "Laal Raga",
-            subHeading:
-                "Bold yet poised, this red silk drape is woven with elegance and dyed in the essence of classic Indian artistry.",
-            discoverLink: "/products/sarees/688b23dbdbf1510aada8c8fb",
-            image: "https://res.cloudinary.com/ditulyswb/image/upload/v1755154814/SF_640x640_1_pbe82s.jpg",
-        },
-        {
-            heading: "Where Blue Whispers and Flowers Sing",
-            subHeading:
-                "Blue like the morning sky, bright with florals in bloom—this pure Katan silk saree redefines elegance with a splash of vibrant heritage.",
-            discoverLink: "collection/pure-katan-silk/687645658f700c1b0a46e381",
-            image: "https://res.cloudinary.com/ditulyswb/image/upload/v1755154815/SF_640x640_2_ofiz6u.jpg",
-        },
-    ];
-
+    const slideData = useHomeTwoSlidGrid()
     const textVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -68,12 +52,12 @@ function HomeOnlyTwoSlideGrid() {
                         </div>
                         <div className="mt-2">
                             <SubHeading
-                                text={slideData[slideIndex].subHeading}
+                                text={slideData[slideIndex].paragraph}
                             />
                         </div>
                         <h3 className="text-2xl font-normal mt-6 underline">
-                            <a href={slideData[slideIndex].discoverLink}>
-                                Discover
+                            <a href={slideData[slideIndex].slug}>
+                                {slideData[slideIndex].slugText}
                             </a>
                         </h3>
                     </motion.div>
@@ -84,9 +68,8 @@ function HomeOnlyTwoSlideGrid() {
                         <div
                             key={i}
                             onClick={() => setSlideIndex(i)}
-                            className={`h-4 w-4 rounded-full border border-white cursor-pointer transition-all duration-300 hover:bg-gray-600 ${
-                                slideIndex === i ? "bg-gray-800" : "bg-gray-400"
-                            }`}
+                            className={`h-4 w-4 rounded-full border border-white cursor-pointer transition-all duration-300 hover:bg-gray-600 ${slideIndex === i ? "bg-gray-800" : "bg-gray-400"
+                                }`}
                         ></div>
                     ))}
                 </div>
