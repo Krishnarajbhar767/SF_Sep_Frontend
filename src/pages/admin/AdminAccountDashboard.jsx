@@ -5,6 +5,7 @@ import { GiClothes } from "react-icons/gi";
 import { BiSolidOffer, BiSolidCoupon } from "react-icons/bi";
 import { FaBloggerB } from "react-icons/fa";
 import { FaComments } from "react-icons/fa6";
+import { MdMarkEmailRead } from "react-icons/md";
 
 import { useMemo } from "react";
 
@@ -39,7 +40,7 @@ function AdminAccountDashboard() {
 
     const navItems = useMemo(() => {
         return [
-            { path: "home-ui", label: "Home Ui", icon: <FiHome size={20} /> },
+
             { path: "overview", label: "Overview", icon: <FiHome size={20} /> },
             { path: "products", label: "Products", icon: <FiBox size={20} /> },
             {
@@ -73,7 +74,7 @@ function AdminAccountDashboard() {
             {
                 path: "newsletters",
                 label: "newsletters",
-                icon: <BiSolidCoupon size={20} />,
+                icon: <MdMarkEmailRead size={20} />,
             },
         ];
     }, []);

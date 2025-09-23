@@ -31,9 +31,7 @@ const AddCategory = lazy(() => import("../pages/admin/category/AddCategory"));
 const AdminOrderDetails = lazy(() =>
     import("../pages/admin/order/AdminOrderDetails")
 );
-const AdminHomeManagement = lazy(() =>
-    import("../pages/admin/home/AdminHomeManagement")
-);
+
 const AdminFabrics = lazy(() => import("../pages/admin/fabrics/AdminFabrics"));
 const AdminOffers = lazy(() => import("../pages/admin/offer/AdminOffers"));
 const AdminCoupons = lazy(() => import("../pages/admin/coupon/AdminCoupons"));
@@ -58,14 +56,7 @@ const AdminRoutes = (
                 </Suspense>
             }
         />
-        <Route
-            path="home-ui"
-            element={
-                <Suspense fallback={<Loader />}>
-                    <AdminHomeManagement />
-                </Suspense>
-            }
-        />
+
         <Route
             path="products"
             element={
