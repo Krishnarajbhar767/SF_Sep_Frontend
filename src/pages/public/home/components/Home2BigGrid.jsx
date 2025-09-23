@@ -24,23 +24,23 @@ function Home2BigGrid() {
         <div className="boxedContainer lg:px-15 px-5 w-full py-4  h-auto  overflow-x-hidden ">
             <div className="md:mb-14 mb-10 mt-4">
                 <div>
-                    <Heading text={data.heading} />
+                    <Heading text={data?.heading} />
                 </div>
                 <div className="mt-2">
                     <SubHeading
                         text={
-                            data.subHeading
+                            data?.subHeading
                         }
                     />
                 </div>
             </div>
             <div className="grid md:grid-cols-2 grid-cols-1 gap-4 ">
-                {data?.items.map((item, index) => (
+                {data?.items?.map((item, index) => (
                     <Link className="relative" to={item.slug}>
                         <motion.img
                             whileTap={{ scale: 0.95 }}
                             key={index}
-                            src={item.image}
+                            src={item?.image}
                             alt="Sarees"
                             className="w-full h-[50vh] md:h-[100vh] object-cover object-top  hover:scale-[101%] transition-all ease-linear duration-200 shadow-sm  border border-gray-200 "
                         />

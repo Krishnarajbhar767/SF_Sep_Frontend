@@ -6,9 +6,9 @@ function HomeOneImageOnly() {
     const data = useHomeOneImageOnly()
     return (
         <div className="h-[300px] md:h-[550px] w-full boxedContainer py-4 sm:px-8 overflow-hidden">
-            <Link to={data.slug}>
+            <Link to={data?.slug}>
                 <img
-                    src={data.image}
+                    src={data?.image}
                     className="object-cover h-full w-full cursor-pointer sm:px-8"
                     alt="background"
                 />

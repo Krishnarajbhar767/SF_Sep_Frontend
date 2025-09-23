@@ -22,12 +22,11 @@ function HomeVideo() {
         <div className=" w-full py-4 h-auto  overflow-x-hidden">
             <div className="md:mb-14 mb-10 mt-4">
                 <div>
-                    <Heading text={data.heading} />
+                    <Heading text={data?.heading} />
                 </div>
                 <div className="mt-2">
                     <SubHeading
-                        text={data.subHeading
-
+                        text={data?.subHeading
                         }
                     />
                 </div>
