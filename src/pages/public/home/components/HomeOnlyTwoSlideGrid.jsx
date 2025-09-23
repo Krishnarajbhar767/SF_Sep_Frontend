@@ -9,6 +9,7 @@ import { useHomeTwoSlidGrid } from "../../../../hooks/useHomeTwoSlidGrid";
 function HomeOnlyTwoSlideGrid() {
     const [slideIndex, setSlideIndex] = useState(0);
     const slideData = useHomeTwoSlidGrid()
+    console.log('TWO Slide Grid Data ->', slideData)
     const textVariants = {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },

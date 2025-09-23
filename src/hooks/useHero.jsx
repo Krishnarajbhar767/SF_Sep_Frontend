@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 const fetchSlides = async () => {
+
     const STRAPI_BACKEND_URL = import.meta.env.VITE_STRAPI_BACKEND
     const res = await fetch(`${STRAPI_BACKEND_URL}/api/hero-slide1s?populate=*`);
     if (!res.ok) throw new Error(`Error: ${res.status} ${res.statusText}`);
@@ -14,7 +15,7 @@ const fetchSlides = async () => {
         paragraph: slide.paragraph,
         slug: slide.slug,
         top: slide.top,
-        image: slide.image?.url || '', // direct Cloudinary URL
+        image: `${STRAPI_BACKEND_URL}${slide.image?.url}` || '', // direct Cloudinary URL
     }));
 };
 

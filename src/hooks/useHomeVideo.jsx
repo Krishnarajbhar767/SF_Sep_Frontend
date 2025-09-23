@@ -12,7 +12,7 @@ async function fetchData() {
     const dataToReturn = {
         heading: data.heading,
         subHeading: data.subHeading,
-        video: data.video.url
+        video: `${STRAPI_BACKEND_URL}${data.video.url}`
     }
     return dataToReturn;
 

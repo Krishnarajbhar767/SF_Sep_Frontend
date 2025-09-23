@@ -15,7 +15,7 @@ async function fetchData() {
         paragraph: itm.paragraph,
         slugText: itm.slugText,
         slug: itm.slug,
-        image: itm.image.url
+        image: `${STRAPI_BACKEND_URL}${itm.image?.url}`
 
     }))
     return dataToReturn;

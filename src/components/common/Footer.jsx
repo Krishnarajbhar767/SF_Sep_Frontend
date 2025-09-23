@@ -8,7 +8,7 @@ import axiosInstance from "../../utils/apiConnector";
 import { handleAxiosError } from "../../utils/handleAxiosError";
 import LOGO from "../../assets/images/logo/SRIJAN FABS PNG VERTICAL.png";
 import { BsInstagram } from "react-icons/bs";
-
+import { useQueryClient } from '@tanstack/react-query';
 import {
     FaFacebookF,
     FaLinkedin,
@@ -23,7 +23,7 @@ const primaryColor = "rgb(83, 62, 45)";
 
 const Footer = () => {
     const categories = useSelector((state) => state.category.categories) || [];
-
+    const queryClient = useQueryClient();
     const { register, handleSubmit, reset } = useForm();
 
     const subscribeNewsHandler = async (data) => {
@@ -63,6 +63,13 @@ const Footer = () => {
             className="bg-[#E4E4E4] pt-12 pb-4"
             style={{ color: primaryColor }}
         >
+            <button onClick={() => {
+
+                queryClient.clear();
+                alert('cache clear')
+            }}>
+                CLear Cache
+            </button>
             <div className="container mx-auto px-2">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
                     {/* Company Info */}

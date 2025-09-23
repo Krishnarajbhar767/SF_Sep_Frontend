@@ -15,7 +15,7 @@ async function fetchData() {
         items: data?.items?.map((grid) => ({
             title: grid?.title,
             slug: grid?.slug,
-            image: grid?.image?.url
+            image: `${STRAPI_BACKEND_URL}${grid.image?.url}`
         }))
     }
     return dataToReturn;

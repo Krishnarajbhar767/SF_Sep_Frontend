@@ -16,7 +16,7 @@ async function fetchData() {
         paragraph: data.paragraph,
         btnText: data.btnText,
         btnUrl: data.btnUrl,
-        image: data.image.url
+        image: `${STRAPI_BACKEND_URL}${data.image?.url}`
     }
     return dataToReturn;
 

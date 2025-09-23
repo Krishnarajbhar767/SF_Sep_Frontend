@@ -11,7 +11,7 @@ async function fetchData() {
     // Forammatting Data For Return 
     const dataToReturn = {
         slug: data.slug,
-        image: data?.image?.url,
+        image: `${STRAPI_BACKEND_URL}${data.image?.url}`
 
     }
     return dataToReturn;
