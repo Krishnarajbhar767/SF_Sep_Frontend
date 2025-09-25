@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { Route } from "react-router-dom";
 import AdminLayout from "../layout/AdminLayout";
 import Loader from "../components/common/Loader";
+import AdminHomeManagement from "../pages/admin/home/AdminHomeManagement";
 
 
 
@@ -45,6 +46,14 @@ const AdminRoutes = (
             element={
                 <Suspense fallback={<Loader />}>
                     <AdminOverview />
+                </Suspense>
+            }
+        />
+        <Route
+            path="home-edit"
+            element={
+                <Suspense fallback={<Loader />}>
+                    <AdminHomeManagement />
                 </Suspense>
             }
         />

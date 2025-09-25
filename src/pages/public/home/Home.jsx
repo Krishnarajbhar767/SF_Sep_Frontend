@@ -32,36 +32,36 @@ function Home() {
         <div className="w-full h-full ">
             {/* Hero Slider */}
             {/* Section 1 */}
-            <HomeHeroSlider sliderData={sliderData1} />
+            {/* <HomeHeroSlider sliderData={sliderData1} /> */}
 
             {/* Sections */}
             <Suspense fallback={<Loader />} >
                 {/* Section 2 */}
                 {/* Home 3 Grid */}
-                <Home3Grid />
+                {/* <Home3Grid /> */}
                 {/* Section 3 */}
                 {/* Home Video */}
-                <HomeVideo />
+                {/* <HomeVideo /> */}
                 {/* Section 4 */}
-                <Home2BigGrid />
+                {/* <Home2BigGrid /> */}
             </Suspense>
 
             <div className="py-4">
                 {/* Section 5 */}
-                <Second_Slider textPosition={true} sliderData={sliderData2} />
+                {/* <Second_Slider textPosition={true} sliderData={sliderData2} /> */}
             </div>
 
 
 
             <Suspense fallback={<Loader />}>
                 {/* Section 6 */}
-                <HomeOneImageOnly />
+                {/* <HomeOneImageOnly /> */}
                 {/* Section 7 */}
-                <HomeOnlyTwoSlideGrid />
+                {/* <HomeOnlyTwoSlideGrid /> */}
                 {/* Section 8 */}
-                <HomeLetsExplore />
+                {/* <HomeLetsExplore /> */}
                 {/* Section 9 */}
-                <WhyChooseUs />
+                {/* <WhyChooseUs /> */}
             </Suspense>
         </div>
     );

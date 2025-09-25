@@ -40,8 +40,9 @@ function AdminAccountDashboard() {
 
     const navItems = useMemo(() => {
         return [
-
+            { path: "home-edit", label: "Home Edit", icon: <FiHome size={20} /> },
             { path: "overview", label: "Overview", icon: <FiHome size={20} /> },
+
             { path: "products", label: "Products", icon: <FiBox size={20} /> },
             {
                 path: "categories",

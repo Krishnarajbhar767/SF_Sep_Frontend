@@ -1,5 +1,8 @@
 import { motion } from "motion/react";
 import React, { useState } from "react";
+const Slider = React.lazy(() => import('../home/editor/Slider'))
+const Home3GridSection2Editor = React.lazy(() => import('../home/editor/Home3GridSection2Editor'))
+const HomeSection3VideoEditor = React.lazy(() => import('../home/editor/HomeSection3VideoEditor'))
 import AdminHomeTabSelector from "./AdminHomeTabSelector";
 const SECTION_TABS = [
     { key: "heroSlider", label: "Hero Slider" },
@@ -26,6 +29,20 @@ function AdminHomeManagement() {
                     sections={SECTION_TABS}
                     onTabChange={(tab) => setActiveTab(tab)}
                 />
+            </div>
+            <div>
+                {
+                    activeTab === 'heroSlider' && <Slider />
+
+                }
+                {
+                    activeTab === 'threeGrid' && <Home3GridSection2Editor />
+
+                }
+                {
+                    activeTab === 'videoBlock' && <HomeSection3VideoEditor />
+
+                }
             </div>
         </motion.div>
     );
