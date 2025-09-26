@@ -7,10 +7,13 @@ import localforage from 'localforage';
 export const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            staleTime: 1000 * 60 * 10,
-            cacheTime: 1000 * 60 * 30,
-        },
-    },
+            cacheTime: 0,           // no caching
+            staleTime: 0,           // always fresh
+            refetchOnMount: true,   // fetch every mount
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: true,
+        }
+    }
 });
 
 persistQueryClient({

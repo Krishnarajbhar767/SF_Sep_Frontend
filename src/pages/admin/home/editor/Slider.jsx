@@ -174,7 +174,7 @@ export default function Slider() {
                             type="file"
                             accept="image/*"
                             onChange={(e) => setFile(e.target.files[0])}
-                            className="mb-4 block w-full text-sm text-gray-600 border border-gray-500 p-2 bg-gray-200 hover:bg-gray-300"
+                            className="py-1 px-2 border-gray-700 border bg-gray-200 hover:bg-gray-300 rounded-sm"
                         />
 
                         {/* Top Checkbox */}

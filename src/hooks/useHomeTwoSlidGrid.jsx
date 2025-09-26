@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-const STRAPI_BACKEND_URL = import.meta.env.VITE_STRAPI_BACKEND
+const STRAPI_BACKEND_URL = import.meta.env.VITE_HOME_API
 async function fetchData() {
-    const res = await fetch(`${STRAPI_BACKEND_URL}/api/section-7s?populate=image`);
+    const res = await fetch(`${STRAPI_BACKEND_URL}/section7`);
     // If Resposne is Not Success Then throw error
     if (!res.ok) throw new Error(`Error: ${res.status} ${res.statusText}`);
     // Destructuring  Data From Response Array
-    const { data } = await res.json();
+    const data = await res.json();
     console.log('Data That  I got For API Call', data)
     // Forammatting Data For Return
     const dataToReturn = data?.map((itm) => ({
@@ -15,7 +15,7 @@ async function fetchData() {
         paragraph: itm.paragraph,
         slugText: itm.slugText,
         slug: itm.slug,
-        image: `${STRAPI_BACKEND_URL}${itm.image?.url}`
+        image: itm.image
 
     }))
     return dataToReturn;

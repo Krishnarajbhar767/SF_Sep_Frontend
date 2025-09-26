@@ -3,19 +3,19 @@ import { useQuery } from '@tanstack/react-query';
 
 const fetchSlides = async () => {
 
-    const STRAPI_BACKEND_URL = import.meta.env.VITE_STRAPI_BACKEND
-    const res = await fetch(`${STRAPI_BACKEND_URL}/api/hero-slide1s?populate=*`);
+    const STRAPI_BACKEND_URL = import.meta.env.VITE_HOME_API
+    const res = await fetch(`${STRAPI_BACKEND_URL}/slider`);
     if (!res.ok) throw new Error(`Error: ${res.status} ${res.statusText}`);
 
     const apiRes = await res.json();
-
+    console.log('APi Response', apiRes)
     // Simplify data: only heading, paragraph, slug, image
-    return apiRes.data.map(slide => ({
+    return apiRes.map(slide => ({
         heading: slide.heading,
         paragraph: slide.paragraph,
         slug: slide.slug,
         top: slide.top,
-        image: `${STRAPI_BACKEND_URL}${slide.image?.url}` || '', // direct Cloudinary URL
+        image: slide.image
     }));
 };
 
@@ -23,9 +23,7 @@ export const useHeroSlides = () => {
     const { data: slides = [], isLoading, isError, error } = useQuery({
         queryKey: ['hero-slides'],
         queryFn: fetchSlides,
-        staleTime: 1000 * 60 * 10, // 10 min cache
-        cacheTime: 1000 * 60 * 30, // 30 hour in memory
-        retry: 5,
+
     });
 
     // Separate slides into top and non-top

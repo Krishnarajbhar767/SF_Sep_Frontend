@@ -4,6 +4,10 @@ const Slider = React.lazy(() => import('../home/editor/Slider'))
 const Home3GridSection2Editor = React.lazy(() => import('../home/editor/Home3GridSection2Editor'))
 const HomeSection3VideoEditor = React.lazy(() => import('../home/editor/HomeSection3VideoEditor'))
 import AdminHomeTabSelector from "./AdminHomeTabSelector";
+import Home2BigGridSection4Editor from "./editor/Home2BigGridSection4Editor";
+import HomeSection6Editor from "./editor/HomeSection6Editor";
+import HomeSection7Editor from "./editor/HomeSection7Editor";
+import HomeSection8Editor from "./editor/HomeSection8Editor";
 const SECTION_TABS = [
     { key: "heroSlider", label: "Hero Slider" },
     { key: "threeGrid", label: "3-Image Grid" },
@@ -12,7 +16,7 @@ const SECTION_TABS = [
     { key: "singleBanner", label: "Single Banner" },
     { key: "twoSlideGrid", label: "2-Slide Grid" },
     { key: "exploreBanner", label: "Explore Banner" },
-    { key: "whyChooseUs", label: "Why Choose Us" },
+
 ];
 function AdminHomeManagement() {
     const [activeTab, setActiveTab] = useState("heroSlider");
@@ -41,6 +45,22 @@ function AdminHomeManagement() {
                 }
                 {
                     activeTab === 'videoBlock' && <HomeSection3VideoEditor />
+
+                }
+                {
+                    activeTab === 'bigGrid' && <Home2BigGridSection4Editor />
+
+                }
+                {
+                    activeTab === 'singleBanner' && <HomeSection6Editor />
+
+                }
+                {
+                    activeTab === 'twoSlideGrid' && <HomeSection7Editor />
+
+                }
+                {
+                    activeTab === 'exploreBanner' && <HomeSection8Editor />
 
                 }
             </div>

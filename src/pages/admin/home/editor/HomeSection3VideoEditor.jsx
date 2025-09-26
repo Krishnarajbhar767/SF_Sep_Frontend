@@ -90,7 +90,8 @@ export default function HomeSection3VideoEditor() {
         type="file"
         accept="video/*"
         onChange={(e) => setFile(e.target.files[0])} // single file only
-        className="mb-4"
+
+        className="mb-4 py-1 px-2 border-gray-700 border bg-gray-200 hover:bg-gray-300 rounded-sm"
       />
 
       <div>

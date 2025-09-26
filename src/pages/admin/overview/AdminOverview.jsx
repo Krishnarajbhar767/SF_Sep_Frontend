@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     FiHome,
     FiAlertTriangle,
@@ -34,18 +34,20 @@ const SkeletonList = () => (
 );
 
 export default function AdminOverview() {
-    const [data, setData] = useState(null);
+    const queryClient = useQueryClient();
+
+    // Fetch overview data with React Query (no caching)
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["admin-overview"],
+        queryFn: async () => {
+            const { data } = await axiosInstance.get("/admin/overview");
+            return data;
+        },
+
+    });
+
     const [month, setMonth] = useState("");
     const [date, setDate] = useState("");
-    const queryClient = useQueryClient();
-    useEffect(() => {
-        axiosInstance
-            .get("/admin/overview")
-            .then((res) => setData(res.data))
-            .catch((err) => console.error("Error fetching overview:", err));
-    }, []);
-
-
 
     const filterByTime = (arr, key) => {
         return arr.filter((x) => {
@@ -58,24 +60,24 @@ export default function AdminOverview() {
         });
     };
 
-    // Function For Clear Cache ->
-    // Flush React Query cache safely
+    // Flush React Query cache
     const handleFlushCache = () => {
         const confirmed = window.confirm(
-            "Are you sure you want to flush ALL  caches? This cannot be undone."
+            "Are you sure you want to flush ALL caches? This cannot be undone."
         );
         if (confirmed) {
             queryClient.clear();
             alert("All caches have been flushed!");
         }
     };
+
     return (
         <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             className="space-y-6"
         >
-            {/* Buttons: Flush Cache & Edit Home Page */}
+            {/* Buttons: Flush Cache */}
             <div className="flex gap-4 mb-6">
                 <button
                     onClick={handleFlushCache}
@@ -83,15 +85,8 @@ export default function AdminOverview() {
                 >
                     Flush Cache
                 </button>
-
-                <Link
-                    to="http://82.25.104.25:1337/admin/"
-                    target="_blank"
-                    className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
-                >
-                    Edit Home Page
-                </Link>
             </div>
+
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between">
                 <h2 className="flex items-center gap-2 text-xl font-semibold uppercase text-gray-800">
@@ -104,14 +99,9 @@ export default function AdminOverview() {
                 {data
                     ? [
                         {
-                            icon: (
-                                <FiAlertTriangle className="text-red-600" />
-                            ),
+                            icon: <FiAlertTriangle className="text-red-600" />,
                             label: "Low Stock Products",
-                            value: filterByTime(
-                                data.lowStockProducts,
-                                "createdAt"
-                            ).length,
+                            value: filterByTime(data.lowStockProducts, "createdAt").length,
                         },
                         {
                             icon: <FiDollarSign className="text-green-600" />,
@@ -119,14 +109,9 @@ export default function AdminOverview() {
                             value: `₹${data.totalRevenue.toLocaleString()}`,
                         },
                         {
-                            icon: (
-                                <FiShoppingCart className="text-yellow-600" />
-                            ),
+                            icon: <FiShoppingCart className="text-yellow-600" />,
                             label: "Pending Orders",
-                            value: filterByTime(
-                                data.pendingOrders,
-                                "createdAt"
-                            ).length,
+                            value: filterByTime(data.pendingOrders, "createdAt").length,
                         },
                         {
                             icon: <FiStar className="text-teal-600" />,
@@ -141,18 +126,12 @@ export default function AdminOverview() {
                         >
                             {card.icon}
                             <div>
-                                <p className="text-xs text-gray-600 uppercase">
-                                    {card.label}
-                                </p>
-                                <p className="text-lg font-medium text-gray-800">
-                                    {card.value}
-                                </p>
+                                <p className="text-xs text-gray-600 uppercase">{card.label}</p>
+                                <p className="text-lg font-medium text-gray-800">{card.value}</p>
                             </div>
                         </motion.div>
                     ))
-                    : Array.from({ length: 4 }).map((_, i) => (
-                        <SkeletonCard key={i} />
-                    ))}
+                    : Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}
             </div>
 
             {/* Stats Grid */}
@@ -185,32 +164,23 @@ export default function AdminOverview() {
                         >
                             <div className="flex items-center gap-2 mb-2">
                                 {item.icon}
-                                <h3 className="text-sm uppercase text-gray-600">
-                                    {item.label}
-                                </h3>
+                                <h3 className="text-sm uppercase text-gray-600">{item.label}</h3>
                             </div>
                             {item.list ? (
                                 <ul className="space-y-1 text-gray-800">
                                     {item.list.map((x) => (
-                                        <li
-                                            key={x.key}
-                                            className="flex justify-between"
-                                        >
+                                        <li key={x.key} className="flex justify-between">
                                             <span>{x.key}</span>
                                             <span>{x.value}</span>
                                         </li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="text-lg font-medium text-gray-800">
-                                    {item.value}
-                                </p>
+                                <p className="text-lg font-medium text-gray-800">{item.value}</p>
                             )}
                         </motion.div>
                     ))
-                    : Array.from({ length: 3 }).map((_, i) => (
-                        <SkeletonList key={i} />
-                    ))}
+                    : Array.from({ length: 3 }).map((_, i) => <SkeletonList key={i} />)}
             </div>
 
             {/* Top Selling List */}
@@ -220,18 +190,13 @@ export default function AdminOverview() {
             >
                 <div className="flex items-center gap-2 mb-2">
                     <FiTrendingUp className="text-green-600" />
-                    <h3 className="text-sm uppercase text-gray-600">
-                        Top Selling
-                    </h3>
+                    <h3 className="text-sm uppercase text-gray-600">Top Selling</h3>
                 </div>
                 {data ? (
                     data.topSellingProducts.length > 0 ? (
                         <ul className="space-y-1 text-gray-800">
                             {data.topSellingProducts.map((p) => (
-                                <li
-                                    key={p.name}
-                                    className="flex justify-between capitalize"
-                                >
+                                <li key={p.name} className="flex justify-between capitalize">
                                     <span>{p.name}</span>
                                     <span>{p.sales} sold</span>
                                 </li>
