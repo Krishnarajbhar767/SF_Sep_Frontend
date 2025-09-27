@@ -67,16 +67,16 @@ export default function BlogDetails() {
                 ← Back to Blogs
             </Link>
 
-            <h1 className="text-4xl font-bold mb-3 text-foreground">{blog.title}</h1>
+            <h1 className="text-4xl font-bold mb-3 text-foreground capitalize">{blog.title}</h1>
             <p className="text-sm text-foreground/70 mb-6">
-                {new Date(blog.createdAt).toLocaleDateString()}
+                {new Date(blog.createdAt).toLocaleDateString("en-GB")}
             </p>
 
             {blog.coverImage && (
                 <img
                     src={blog.coverImage}
                     alt={blog.title}
-                    className="w-full h-72 md:h-96 object-cover rounded-lg shadow mb-8"
+                    className="w-full h-72 md:h-[30rem] object-cover rounded-lg shadow mb-8"
                 />
             )}
 

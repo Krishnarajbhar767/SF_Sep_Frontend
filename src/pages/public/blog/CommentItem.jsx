@@ -26,7 +26,7 @@ export default function CommentItem({ comment, fetchComments, user }) {
         .join(" ");
 
     return (
-        <li className="flex flex-col space-y-3 p-4 bg-foreground/5 border border-foreground/20 rounded-lg shadow-sm hover:shadow-md transition">
+        <li className="flex flex-col space-y-3 p-4 bg-foreground/5 border border-foreground/20 rounded-lg shadow-sm hover:shadow-md transition capitalize">
             {/* Header: Avatar + Name + Timestamp */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -36,7 +36,8 @@ export default function CommentItem({ comment, fetchComments, user }) {
                     <p className="font-semibold text-foreground text-sm">{commenterName}</p>
                 </div>
                 <span className="text-xs text-foreground/50">
-                    {new Date(comment.createdAt).toLocaleString()}
+
+                    {new Date(comment.createdAt).toLocaleDateString("en-GB")}
                     {comment.isEdited ? " (edited)" : ""}
                 </span>
             </div>

@@ -115,12 +115,12 @@ export default function Blogs() {
                                 {/* Content Section */}
                                 <div className="p-5 flex flex-col flex-grow">
                                     {/* Title */}
-                                    <h2 className="text-lg font-semibold text-foreground mb-2 line-clamp-2">
+                                    <h2 className="text-lg font-semibold text-foreground mb-2 line-clamp-2 capitalize">
                                         {blog.title}
                                     </h2>
 
                                     {/* Metadata */}
-                                    <div className="flex items-center text-xs text-muted-foreground mb-4 gap-2">
+                                    <div className="flex items-center text-xs text-muted-foreground mb-4 gap-2 capitalize">
                                         <span className="font-medium text-foreground">Admin</span>
                                         <span className="w-1 h-1 rounded-full bg-muted-foreground"></span>
                                         <span>{new Date(blog.createdAt).toLocaleDateString("en-GB")}</span>

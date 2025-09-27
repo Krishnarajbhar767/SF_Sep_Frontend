@@ -69,7 +69,7 @@ export default function AdminNewsletterEmails() {
             ) : emails.length === 0 ? (
                 <p className="text-gray-600">No subscribers found.</p>
             ) : (
-                <ul className="bg-white border border-gray-200 rounded-lg divide-y">
+                <ul className="capitalize bg-white border border-gray-200 rounded-lg divide-y">
                     {emails.map((item, index) => (
                         <li
                             key={index}

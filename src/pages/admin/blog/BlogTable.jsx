@@ -13,8 +13,8 @@ export default function BlogTable({ blogs, onEdit, onDelete }) {
                 </thead>
                 <tbody>
                     {blogs.map((b) => (
-                        <tr key={b._id} className="border-t hover:bg-gray-50">
-                            <td className="p-3">{b.title}</td>
+                        <tr key={b._id} className="border-t hover:bg-gray-50 capitalize">
+                            <td className="p-3 capitalize">{b.title}</td>
                             <td className="p-3">{b.slug}</td>
                             <td className="p-3">
                                 {new Date(b.createdAt).toLocaleDateString()}

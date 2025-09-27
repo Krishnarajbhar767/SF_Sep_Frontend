@@ -66,7 +66,7 @@ function AdminUsers() {
                 updatedList = await adminUserApis.addUser(formData);
             }
             setUsers(updatedList);
-            
+
             const freshList = await adminUserApis.getAllUsers();
             setUsers(freshList);
             toast.success(editUser ? "User updated" : "User added");
@@ -150,7 +150,7 @@ function AdminUsers() {
                                 whileHover={{ scale: 1.02 }}
                                 className="bg-white border border-gray-200 rounded-md shadow-sm p-4 flex flex-col gap-2"
                             >
-                                <h3 className="text-base font-medium text-gray-800">
+                                <h3 className="text-base font-medium text-gray-800 capitalize">
                                     {`${user.firstName} ${user.lastName}`}
                                 </h3>
                                 <p className="text-sm text-gray-600">
