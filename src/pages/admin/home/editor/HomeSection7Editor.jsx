@@ -111,7 +111,7 @@ export default function HomeSection7Editor() {
 
                     <button
                         onClick={() => handleSave(index)}
-                        className="bg-green-600 text-white px-6 py-2 rounded"
+                        className="btn-gray text-white px-6 py-2 rounded"
                         disabled={loading}
                     >
                         {loading ? "Saving..." : "Save"}
@@ -125,7 +125,7 @@ export default function HomeSection7Editor() {
                     onClick={() =>
                         setDocs([...docs, { heading: "", paragraph: "", slugText: "", slug: "", image: "" }])
                     }
-                    className="bg-blue-600 text-white px-6 py-2 rounded"
+                    className="btn-gray text-white px-6 py-2 rounded"
                 >
                     Add New Card
                 </button>

@@ -295,3 +295,36 @@ select:-webkit-autofill {
     display: block;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
+
+/* Home Edit Page  Button Class */
+.btn-gray {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background-color: #1f2937;
+    /* gray-800 */
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.btn-gray:hover {
+    background-color: #111827;
+    /* gray-900 */
+}
+
+.btn-gray:active {
+    background-color: #0f172a;
+    /* gray-950 (darker) */
+    transform: scale(0.97);
+}
+
+.btn-gray:disabled {
+    background-color: #374151;
+    /* gray-700 */
+    cursor: not-allowed;
+    opacity: 0.7;
+}

@@ -8,6 +8,12 @@ const fetchBlogs = async () => {
     return data?.data || [];
 };
 
+function stripHtml(html) {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+}
+
 export default function Blogs() {
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
@@ -24,10 +30,7 @@ export default function Blogs() {
     } = useQuery({
         queryKey: ["blogs"],
         queryFn: fetchBlogs,
-        staleTime: 1000 * 60 * 10, // 10 minutes: use cache if fresh
-        cacheTime: 1000 * 60 * 30, // keep in memory for 30 min
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
+
     });
 
     //  Filter and paginate
@@ -97,28 +100,50 @@ export default function Blogs() {
                             <div
                                 key={blog._id}
                                 className="rounded-2xl border border-foreground/20 shadow-sm 
-                  hover:shadow-lg transition-transform transform hover:-translate-y-1 overflow-hidden flex flex-col"
+    hover:shadow-lg transition-transform transform hover:-translate-y-1 
+    overflow-hidden flex flex-col bg-white"
                             >
-                                <img
-                                    src={blog.coverImage}
-                                    alt={blog.title}
-                                    className="h-56 w-full object-cover"
-                                />
+                                {/* Cover Image */}
+                                <div className="relative">
+                                    <img
+                                        src={blog.coverImage}
+                                        alt={blog.title}
+                                        className="h-56 w-full object-cover transition-transform duration-300 hover:scale-105"
+                                    />
+                                </div>
+
+                                {/* Content Section */}
                                 <div className="p-5 flex flex-col flex-grow">
-                                    <h2 className="text-lg font-semibold text-foreground mb-6 line-clamp-2">
+                                    {/* Title */}
+                                    <h2 className="text-lg font-semibold text-foreground mb-2 line-clamp-2">
                                         {blog.title}
                                     </h2>
+
+                                    {/* Metadata */}
+                                    <div className="flex items-center text-xs text-muted-foreground mb-4 gap-2">
+                                        <span className="font-medium text-foreground">Admin</span>
+                                        <span className="w-1 h-1 rounded-full bg-muted-foreground"></span>
+                                        <span>{new Date(blog.createdAt).toLocaleDateString("en-GB")}</span>
+                                    </div>
+
+                                    {/* Content Preview */}
+                                    <p className="text-md text-muted-foreground mb-6 line-clamp-2 leading-snug">
+                                        {stripHtml(blog.content)}
+                                    </p>
+
+                                    {/* Action */}
                                     <div className="mt-auto">
                                         <button
                                             onClick={() => readMoreHandler(blog)}
-                                            className="inline-block px-5 py-2 rounded-lg bg-foreground 
-                        text-white hover:bg-foreground/80 transition font-medium text-sm"
+                                            className="inline-flex items-center px-4 py-2 rounded-lg bg-foreground 
+          text-white hover:bg-foreground/90 transition font-medium text-sm shadow-sm"
                                         >
-                                            Read More
+                                            Read More →
                                         </button>
                                     </div>
                                 </div>
                             </div>
+
                         ))}
                     </div>
 

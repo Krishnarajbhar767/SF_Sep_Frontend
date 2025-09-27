@@ -78,7 +78,7 @@ export default function HomeSection6Editor() {
 
             <button
                 onClick={handleSave}
-                className="bg-blue-600 text-white px-6 py-2 rounded"
+                className="btn-gray text-white px-6 py-2 rounded"
                 disabled={loading}
             >
                 {loading ? "Saving..." : "Save"}

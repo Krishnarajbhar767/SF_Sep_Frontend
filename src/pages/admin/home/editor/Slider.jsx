@@ -97,8 +97,9 @@ export default function Slider() {
 
             {/* Sliders List */}
             <div className="grid gap-4">
-                {sliders.map((slider) => (
-                    <div key={slider._id} className="border rounded p-4 shadow">
+                {sliders.map((slider, idx) => (
+                    <div key={slider._id} className="border rounded p-4 shadow relative">
+                        <div className="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center absolute -left-3 -top-3 font-semibold z-10">{idx + 1}</div>
                         <img
                             src={slider.image}
                             alt={slider.heading}
@@ -109,7 +110,7 @@ export default function Slider() {
                         <p className="text-xs text-gray-500">Slug: {slider.slug}</p>
                         <p className="text-xs">Top: {slider.top ? "✅ Yes" : "❌ No"}</p>
                         <button
-                            className="mt-2 px-3 py-1 bg-blue-600 text-white rounded"
+                            className="mt-2 px-3 py-1 btn-gray text-white rounded"
                             onClick={() => handleEdit(slider)}
                         >
                             Edit
@@ -198,7 +199,7 @@ export default function Slider() {
                                 Cancel
                             </button>
                             <button
-                                className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+                                className=" text-white px-6 py-2 rounded btn-gray"
                                 onClick={handleSave}
                                 disabled={uploading}
                             >
